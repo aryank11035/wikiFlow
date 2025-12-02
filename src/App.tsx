@@ -3,23 +3,19 @@ import './App.css'
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';  
 import { useCallback, useEffect, useState } from 'react';
+import { MainPageNode } from './components/MainPageNode';
+
+
+const nodeTypes = {
+  mainPageNode : MainPageNode
+}
 
 const initialNodes = [
   {
     id: 'n1',
     position: { x: 0, y: 0 },
     data: { label: 'Node 1' },
-    type: 'input',
-  },
-  {
-    id: 'n2',
-    position: { x: 100, y: 100 },
-    data: { label: 'Node 2' },
-  },
-  {
-    id: 'n3',
-    position: { x: 200, y: 200 },
-    data: { label: 'Node 3' },
+    type: 'mainPageNode',
   },
 ];
 const initialEdges = [
@@ -35,29 +31,30 @@ const initialEdges = [
 export default function App() {
  
 
-  // const [nodes, setNodes] = useState(initialNodes);
-  // const [edges, setEdges] = useState(initialEdges);
+  const [nodes, setNodes] = useState(initialNodes);
+  const [edges, setEdges] = useState(initialEdges);
   
-  // const onNodesChange = useCallback(
-  //   (changes: any) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-  //   [],
-  // );
-  // const onEdgesChange = useCallback(
-  //   (changes: any) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-  //   [],
-  // );
+  const onNodesChange = useCallback(
+    (changes: any) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+    [],
+  );
+  const onEdgesChange = useCallback(
+    (changes: any) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+    [],
+  );
 
-  // const onConnect = useCallback(
-  //   (params: any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-  //   [],
-  // );
+  const onConnect = useCallback(
+    (params: any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    [],
+  );
   
   return (
-    <div style={{ height: '100vh', width: '100%', overflow: 'auto' }}>
+    <div style={{ height: '100vh', width: '100%', overflow: 'auto' }} >
       {/* forget react flow temporarily */}
-      {/* <ReactFlow 
+      <ReactFlow 
         nodes={nodes} 
         edges={edges}   
+        nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
@@ -69,11 +66,8 @@ export default function App() {
             gap={0}
         />
         <Controls />
-      </ReactFlow> */}
-       <iframe
-    src="http://localhost:3001/mainpage"
-    style={{ width: "100%", height: "100vh", border: "none" }}
-    />
+      </ReactFlow>
+       {/* <MainPageNode/> */}
     </div>
   );
 }
