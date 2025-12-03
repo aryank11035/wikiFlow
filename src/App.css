@@ -9,3 +9,6 @@
     scrollbar-width: none;
   }
 }
+#the-iframe::-webkit-scrollbar {
+    display: none;
+}
