@@ -4,11 +4,13 @@ import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, ad
 import '@xyflow/react/dist/style.css';  
 import { useCallback, useEffect, useState } from 'react';
 import {  InfoNode, MainPageNode } from './components/MainPageNode';
+import { TitlePageNode } from './components/TitlePageNode';
 
 
 const nodeTypes = {
   mainPageNode : MainPageNode,
   infoNode : InfoNode,
+  titlePageNode : TitlePageNode
 }
 
 
@@ -21,15 +23,21 @@ const initialNodes = [
     type: 'mainPageNode',
   },
   {
-    id: 'infoNode',
-    position: { x: 1000, y: 400 },
-    data: { label: 'infoNode' },
-    type : 'infoNode'
+    id: 'titlePageNode',
+    position: { x: 1000, y: 0 },
+    data: { label: 'titlePageNode' },
+    type : 'titlePageNode'
   },
+  // {
+  //   id: 'infoNode',
+  //   position: { x: 1000, y: 400 },
+  //   data: { label: 'infoNode' },
+  //   type : 'infoNode'
+  // },
 ];
 const initialEdges = [
   {
-    id: 'mainPageNode-infoNode',
+    id: 'mainPageNode-titlePageNode',
     source: 'mainPageNode',
     sourceHandle : 'd',
     target: 'infoNode',
@@ -57,6 +65,53 @@ export default function App() {
     [],
   );
 
+  useEffect(() => {
+    const handleMessage = (e : MessageEvent) => {
+      if(e.origin !== 'http://localhost:3001') return 
+      
+      if(e.data.type === 'WIKI_LINK_CLICKED') {
+        const {title , sourceNodeId} = e.data
+        
+        console.log(title)
+        const newNodeId = `title-${title.replace(/\s+/g, '-')}-${Date.now()}`;
+        
+        const sourceNode = nodes.find((n: any) => n.id === sourceNodeId);
+        const newPosition = {
+          x: sourceNode ? sourceNode.position.x + 400 : Math.random() * 500,
+          y: sourceNode ? sourceNode.position.y + Math.random() * 100 - 50 : Math.random() * 500,
+        };
+
+        const newNode = {
+          id: newNodeId,
+          position: newPosition,
+          data: { 
+            label: title,
+            title: title 
+          },
+          type: 'titlePageNode',
+        };
+        
+        // Create new edge
+        const newEdge = {
+          id: `${sourceNodeId}-${newNodeId}`,
+          source: sourceNodeId,
+          sourceHandle: 'd',
+          target: newNodeId,
+          targetHandle: 'c',
+        };
+        
+        // Update state
+        setNodes((nds: any) => [...nds, newNode]);
+        setEdges((eds) => [...eds, newEdge]);
+        console.log(nodes.length)
+      }
+    }
+
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  },[nodes])
 
   
   return (

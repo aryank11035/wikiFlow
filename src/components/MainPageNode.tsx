@@ -1,6 +1,8 @@
 import { Position, Handle } from '@xyflow/react';
 import { useRef, useState } from 'react';
 import { X } from 'lucide-react';
+import { IFrameNode } from './IframeNode';
+import { CloseBar } from './Closebar';
 
 const handleStyle = {
 
@@ -19,7 +21,7 @@ function getLinkAtrribute() {
 }
 
 
-export const MainPageNode = () => {
+export const MainPageNode = ({id} : {id : string}) => {
 
 
     const [hover , onHover] = useState<boolean>(false) 
@@ -32,21 +34,12 @@ export const MainPageNode = () => {
             onMouseLeave={() => onHover(false) }
         >
 
-                <div className="w-full bg-neutral-300 h-fit rounded-t-xs border border-neutral-400 flex justify-between items-center inset-shadow-sm  inset-shadow-neutral-200/50">
-                    <p className="text-white pl-2 text-xs font-bold text-shadow-lg">en.wikipedia.org</p>
-                    <div className="text-white p-2 text-center flex items-center justify-center hover:text-neutral-500 duration-300 h-full cursor-pointer">
-                        <X size={15}/>
-                    </div>
-                </div>
+                <CloseBar/>
                 
-                <div className="relative w-230 h-130 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/80 "
+                <div className="relative w-230 h-130 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/80"
                    
                 >
-                    <iframe
-                        id='the-iframe'
-                        src="http://localhost:3001/mainpage"
-                        className=" w-full h-full  rounded-xs"
-                    />
+                    <IFrameNode linkpage='mainpage' nodeId={id}/>
                 </div>
                 
                 <MainNodeHandles hover={hover}/>
