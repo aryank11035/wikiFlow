@@ -33,7 +33,7 @@ const initialEdges = [
     source: 'mainPageNode',
     sourceHandle : 'd',
     target: 'infoNode',
-    type:'bezier',
+    // type:'bezier',
   },
 ];
 

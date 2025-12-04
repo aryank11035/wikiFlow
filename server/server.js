@@ -1,9 +1,16 @@
 import express from 'express'
 import cors from "cors";
-import { JSDOM } from "jsdom";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express()
 app.use(cors())
+
+app.use('/helpers', express.static(path.join(__dirname, 'helpers')));
 
 app.get('/mainpage', async (req, res) => {
     
@@ -11,6 +18,7 @@ app.get('/mainpage', async (req, res) => {
       "https://en.wikipedia.org/api/rest_v1/page/html/Main_Page"
     );
     
+
   const html = await mainPageResponse.text();
 
   const styledHtml = `
@@ -35,6 +43,9 @@ app.get('/mainpage', async (req, res) => {
         </head>
         <body>
             ${html}
+            <script src="http://localhost:3001/helpers/click-event.js" type="module">
+
+            </script>
         </body>
         </html>
     `;

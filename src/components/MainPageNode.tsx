@@ -6,14 +6,18 @@ const handleStyle = {
 
     width: '10px',
     height: '10px',
-    background: '#a3a3a3',
-      // neutral-400
+    background: '#a3a3a3' ,// neutral-400
     borderColor: '#737373',    // neutral-500
     borderRadius: '2px'  ,
     zIndex: 10,  
     cursor: 'pointer'     // rounded-xs
     
 }
+
+function getLinkAtrribute() {
+    return null
+}
+
 
 export const MainPageNode = () => {
 
@@ -41,34 +45,82 @@ export const MainPageNode = () => {
                     <iframe
                         id='the-iframe'
                         src="http://localhost:3001/mainpage"
-                        className=" w-full h-full  rounded-xs "
+                        className=" w-full h-full  rounded-xs"
                     />
                 </div>
                 
-                            <>
-                                <Handle type="source" position={Position.Top}  style={{ ...handleStyle , position: 'absolute',    top: 6 ,   opacity : 0 }} id='a' />
-                                <Handle type="source" position={Position.Bottom}  style={{ ...handleStyle , position: 'absolute',   bottom : 6 ,   opacity : 0 }}  id='b'/>
-                                <Handle type="source" position={Position.Left}  style={{ ...handleStyle ,position: 'absolute',    left : 6 ,   opacity : 0 }} id='c'/>
-                                <Handle type="source" position={Position.Right} style={{ ...handleStyle , position: 'absolute',   right : 6 ,   opacity : 0  }} id='d'/>
-
-{/*                        
-                                        <>
-                                            <Handle type="target" position={Position.Top}  style={handleStyle } id='ta' />
-                                            <Handle type="target" position={Position.Bottom}  style={handleStyle }  id='tb'/>
-                                            <Handle type="target" position={Position.Left}  style={handleStyle } id='tc'/>
-                                            <Handle type="target" position={Position.Right} style={handleStyle } id='td'/>
-                                        </>
-                              */}
-
-                            </>
-                     
+                <MainNodeHandles hover={hover}/>
             
         </div>
     )
 
 
 }   
+const MainNodeHandles = ({hover} : {hover : boolean}) => {
+    return (
+        <>
+        <Handle
+            type="source"
+            position={Position.Top}
+            id="a"
+            style={{
+            ...handleStyle,
+            left: '50%',
+            top:  hover ? -5 : 0,
+            transform: 'translateX(-50%)',
+            opacity: hover ? 1 : 0,
+            }}
+        />
+        <Handle
+            type="source"
+            position={Position.Bottom}
+            id="b"
+            style={{
+            ...handleStyle,
+            left: '50%',
+            bottom:  hover ? -5 : 0,
+            transform: 'translateX(-50%)',
+            opacity: hover ? 1 : 0,
+            }}
+        />
+        <Handle
+            type="source"
+            position={Position.Left}
+            id="c"
+            style={{
+            ...handleStyle,
+            top: '50%',
+            left:  hover ? -5 : 0,
+            transform: 'translateY(-50%)',
+            opacity: hover ? 1 : 0,
+            }}
+        />
+        <Handle
+            type="source"
+            position={Position.Right}
+            id="d"
+            style={{
+            ...handleStyle,
+            top: '50%',
+            right:  0,           // small offset to remove edge gap
+            transform: 'translateY(-50%)',
+            opacity:  0,
+            }}
+        />
 
+          <Handle
+            type="target"
+            position={Position.Right}
+            id="td"
+            style={{
+            ...handleStyle,
+            opacity : hover ? 1 : 0
+            }}
+  />
+
+        </>
+    )
+}
 export const InfoNode = () => {
     return (
         <div className="p-4 bg-white border-2 border-gray-400 rounded">
