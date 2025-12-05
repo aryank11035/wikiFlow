@@ -1,7 +1,7 @@
 import { Position, Handle } from '@xyflow/react';
 import { useRef, useState } from 'react';
 import { X } from 'lucide-react';
-import { IFrameNode } from './IframeNode';
+import { IFrameNode } from './IFrameNode';
 import { CloseBar } from './Closebar';
 
 const handleStyle = {
@@ -39,7 +39,7 @@ export const MainPageNode = ({id} : {id : string}) => {
                 <div className="relative w-230 h-130 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/80"
                    
                 >
-                    <IFrameNode linkpage='mainpage' nodeId={id}/>
+                    <IFrameNode linkpage='mainpage' nodeId={id} mainpage={true}/>
                 </div>
                 
                 <MainNodeHandles hover={hover}/>
@@ -50,6 +50,12 @@ export const MainPageNode = ({id} : {id : string}) => {
 
 }   
 const MainNodeHandles = ({hover} : {hover : boolean}) => {
+
+
+    const onClick = ( ) => {
+        console.log('clicked')
+    }
+
     return (
         <>
         <Handle

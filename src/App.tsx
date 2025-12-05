@@ -72,9 +72,7 @@ export default function App() {
       if(e.data.type === 'WIKI_LINK_CLICKED') {
         const {title , sourceNodeId} = e.data
         
-        console.log(title)
-        const newNodeId = `title-${title.replace(/\s+/g, '-')}-${Date.now()}`;
-        
+        const newNodeId = `title-${title.replace(/\s+/g, '-')}-${Date.now()}`;   
         const sourceNode = nodes.find((n: any) => n.id === sourceNodeId);
         const newPosition = {
           x: sourceNode ? sourceNode.position.x + 400 : Math.random() * 500,
@@ -103,7 +101,6 @@ export default function App() {
         // Update state
         setNodes((nds: any) => [...nds, newNode]);
         setEdges((eds) => [...eds, newEdge]);
-        console.log(nodes.length)
       }
     }
 
@@ -125,6 +122,7 @@ export default function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         style={{ backgroundColor: "#ffffff" }}
+        zoomOnScroll={false}
         fitView
       >
         <Background 

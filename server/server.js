@@ -2,7 +2,7 @@ import express from 'express'
 import cors from "cors";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { SendHTMLFormat } from './helpers/send-html-format.js';
+import { SendHTMLFormat, SendHTMLFormatforTitle } from './helpers/send-html-format.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,18 +34,17 @@ app.get('/title', async (req, res) => {
     if (!title) {
         return res.status(400).send('<html><body><h1>No title provided</h1></body></html>');
     }
-
     try {
         const titlePageResponse = await fetch(
             `https://en.wikipedia.org/api/rest_v1/page/html/${encodeURIComponent(title)}`
         );
-        
+     
         if (!titlePageResponse.ok) {
             throw new Error('Failed to fetch Wikipedia page');
         }
         
-        console.log('Fetching page:', title);
-        await SendHTMLFormat(titlePageResponse, res);
+
+        await SendHTMLFormatforTitle(titlePageResponse, res);
         
     } catch (error) {
         console.error('Error fetching Wikipedia page:', error);
