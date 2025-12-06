@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import { IFrameNode } from './IFrameNode';
 import { CloseBar } from './Closebar';
 
-const handleStyle = {
+export const handleStyle = {
 
     width: '10px',
     height: '10px',
@@ -58,10 +58,40 @@ const MainNodeHandles = ({hover} : {hover : boolean}) => {
 
     return (
         <>
+
+        
+        <Handle 
+            type='target'
+            position={Position.Top}
+            id='top-target'
+            style={{
+            ...handleStyle,
+            opacity:  0,
+            }}
+        />
+            <Handle 
+            type='target'
+            position={Position.Bottom}
+            id='bottom-target'
+            style={{opacity : 0}}
+        />
+            <Handle 
+            type='target'
+            position={Position.Left}
+            id='left-target'
+            style={{opacity : 0}}
+        />
+            <Handle 
+            type='target'
+            position={Position.Right}
+            id='right-target'
+            style={{opacity : 0}}
+        />
+
         <Handle
             type="source"
             position={Position.Top}
-            id="a"
+            id="top-source"
             style={{
             ...handleStyle,
             left: '50%',
@@ -73,7 +103,7 @@ const MainNodeHandles = ({hover} : {hover : boolean}) => {
         <Handle
             type="source"
             position={Position.Bottom}
-            id="b"
+            id="bottom-source"
             style={{
             ...handleStyle,
             left: '50%',
@@ -85,7 +115,7 @@ const MainNodeHandles = ({hover} : {hover : boolean}) => {
         <Handle
             type="source"
             position={Position.Left}
-            id="c"
+            id="left-source"
             style={{
             ...handleStyle,
             top: '50%',
@@ -97,25 +127,16 @@ const MainNodeHandles = ({hover} : {hover : boolean}) => {
         <Handle
             type="source"
             position={Position.Right}
-            id="d"
+            id="right-source"
             style={{
             ...handleStyle,
             top: '50%',
-            right:  0,           // small offset to remove edge gap
+            right:   hover ? -5 : 0,           // small offset to remove edge gap
             transform: 'translateY(-50%)',
-            opacity:  0,
+            opacity:  hover ? 1 : 0,
             }}
         />
 
-          <Handle
-            type="target"
-            position={Position.Right}
-            id="td"
-            style={{
-            ...handleStyle,
-            opacity : hover ? 1 : 0
-            }}
-  />
 
         </>
     )

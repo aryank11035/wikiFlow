@@ -32,14 +32,7 @@ export async function SendHTMLFormatforTitle(mainPageResponse , res) {
     const html = await mainPageResponse.text();
     
 
-     console.log('HTML Preview:', html.substring(0, 1000));
-    
-    // Check if firstHeading exists
-    if (html.includes('firstHeading')) {
-        console.log('✓ firstHeading found in HTML');
-    } else {
-        console.log('✗ firstHeading NOT found in HTML');
-    }
+   
     
     // Add custom styles and script to the HTML
     const styledHtml = html.replace(

@@ -1,6 +1,7 @@
 import './App.css'
 
-import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
+import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState  } from '@xyflow/react';
+import type { Edge, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';  
 import { useCallback, useEffect, useState } from 'react';
 import {  InfoNode, MainPageNode } from './components/MainPageNode';
@@ -28,19 +29,15 @@ const initialNodes = [
     data: { label: 'titlePageNode' },
     type : 'titlePageNode'
   },
-  // {
-  //   id: 'infoNode',
-  //   position: { x: 1000, y: 400 },
-  //   data: { label: 'infoNode' },
-  //   type : 'infoNode'
-  // },
+
 ];
 const initialEdges = [
   {
     id: 'mainPageNode-titlePageNode',
     source: 'mainPageNode',
-    sourceHandle : 'd',
-    target: 'infoNode',
+    sourceHandle : 'right-source',
+    target: 'titlePageNode',
+    targetHandle: 'left-target'
     // type:'bezier',
   },
 ];
@@ -48,26 +45,75 @@ const initialEdges = [
 export default function App() {
  
 
-  const [nodes, setNodes] = useState<any>(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [nodes, setNodes ,onNodesChange] = useNodesState<any>(initialNodes);
+  const [edges, setEdges , onEdgesChange] = useEdgesState(initialEdges);
   
-  const onNodesChange = useCallback(
-    (changes: any) => setNodes((nodesSnapshot : any) => applyNodeChanges(changes, nodesSnapshot)),
-    [],
-  );
-  const onEdgesChange = useCallback(
-    (changes: any) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    [],
-  );
-
   const onConnect = useCallback(
-    (params: any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    (connection: any) => {
+      setEdges((edgesSnapshot) => addEdge(connection, edgesSnapshot))
+    },
     [],
   );
+ 
+  const handleEdgesChange = ( draggedNode : Node ) => {
+
+    setEdges((currentEdge) => {
+        return currentEdge.map((edge) => {
+            if(edge.source === draggedNode.id || edge.target === draggedNode.id){
+                
+              const sourceNode = nodes.find(n => n.id === edge.source)
+              const targetNode = nodes.find(n => n.id === edge.target)
+
+              if (!sourceNode || !targetNode) return edge;
+
+              const { sourceHandle, targetHandle } = calculateBestHandles(sourceNode, targetNode);
+  
+
+              return { ...edge , sourceHandle , targetHandle }
+
+            }
+
+            return edge
+        })
+    })
+  }
+
+  const calculateBestHandles = (sourceNode: any, targetNode: any) => {
+
+    
+    const sourceCenterX = sourceNode.position.x + (sourceNode.measured?.width || 0) / 2;
+    const sourceCenterY = sourceNode.position.y + (sourceNode.measured?.height || 0) / 2;
+    const targetCenterX = targetNode.position.x + (targetNode.measured?.width || 0) / 2;
+    const targetCenterY = targetNode.position.y + (targetNode.measured?.height || 0) / 2;
+    
+    const deltaX = targetCenterX - sourceCenterX;
+    const deltaY = targetCenterY - sourceCenterY;
+    
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0) {
+        return { sourceHandle: 'right-source', targetHandle: 'left-target' };
+      } else {
+        return { sourceHandle: 'left-source', targetHandle: 'right-target' };
+      }
+    } else {
+      if (deltaY > 0) {
+        return { sourceHandle: 'bottom-source', targetHandle: 'top-target' };
+      } else {
+        return { sourceHandle: 'top-source', targetHandle: 'bottom-target' };
+      }
+    }
+
+  };
+
+  const onNodeDrag = (e : React.MouseEvent , node : Node) => {
+    handleEdgesChange(node)
+  }
+
+
 
   useEffect(() => {
     const handleMessage = (e : MessageEvent) => {
-      if(e.origin !== 'http://localhost:3001') return 
+      if(e.origin !== 'http://localhost:3001') return   
       
       if(e.data.type === 'WIKI_LINK_CLICKED') {
         const {title , sourceNodeId} = e.data
@@ -93,9 +139,9 @@ export default function App() {
         const newEdge = {
           id: `${sourceNodeId}-${newNodeId}`,
           source: sourceNodeId,
-          sourceHandle: 'd',
+          sourceHandle:'right-source',
           target: newNodeId,
-          targetHandle: 'c',
+          targetHandle: 'left-target',
         };
         
         // Update state
@@ -121,6 +167,8 @@ export default function App() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodeDrag={onNodeDrag}
+
         style={{ backgroundColor: "#ffffff" }}
         zoomOnScroll={false}
         fitView
