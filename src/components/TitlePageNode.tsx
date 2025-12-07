@@ -14,21 +14,24 @@ export const TitlePageNode = ({id , data} : {id : string ,data : any}) => {
     return(
         <>
      
-            <div className="w-fit h-fit shadow-2xl relative" onMouseEnter={() => onHover(true) }
-            onMouseLeave={() => onHover(false) }>
+            <div className="w-fit h-fit shadow-2xl relative" 
+                 onMouseEnter={() => onHover(true) }
+                 onMouseLeave={() => onHover(false) }>
                 <CloseBar/>
                 <div className="relative w-fit h-fit bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/80">
                 
                     <IFrameNode linkpage={`title?title=${encodeURIComponent(title)}`} nodeId={id} mainpage={false} title={title}/>
                 </div>
-            <TitleNodeHandles hover={hover} />    
+            <TitleNodeHandles hover={hover} onHover={onHover}/>    
             </div>
         </>
     )
 }
 
 
-const TitleNodeHandles = ({hover} : {hover : boolean} )  => {
+const TitleNodeHandles = ({hover , onHover} : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
+
+
     return (
         <>
 
@@ -38,7 +41,7 @@ const TitleNodeHandles = ({hover} : {hover : boolean} )  => {
             id='top-target'
             style={{
                 ...handleStyle,
-
+                top : 5 ,
                 opacity:  0,
             }}
         />
@@ -46,19 +49,27 @@ const TitleNodeHandles = ({hover} : {hover : boolean} )  => {
             type='target'
             position={Position.Bottom}
             id='bottom-target'
-            style={{opacity : 0}}
+            style={{ ...handleStyle, opacity : 0, bottom : 5}}
         />
             <Handle 
             type='target'
             position={Position.Left}
             id='left-target'
-            style={{opacity : 0}}
+            style={{
+                ...handleStyle,
+                opacity : 0 , 
+                left : 5 
+            }}
         />
             <Handle 
             type='target'
             position={Position.Right}
             id='right-target'
-            style={{opacity : 0}}
+            style={{
+                ...handleStyle,
+                opacity : 0,
+                right: 5
+            }}
         />
     
         
@@ -67,12 +78,9 @@ const TitleNodeHandles = ({hover} : {hover : boolean} )  => {
             position={Position.Top}
             id="top-source"
             style={{
-            ...handleStyle,
-            left: '50%',
-            top:  hover ? -5 : 0,
-            transform: 'translateX(-50%)',
-            opacity: hover ? 1 : 0,
-            pointerEvents: hover ? 'auto' : 'none',
+                ...handleStyle,
+                top : hover ? 0 : 5 ,
+                opacity: hover ? 1 : 0,
             }}
         />
         <Handle
@@ -80,10 +88,8 @@ const TitleNodeHandles = ({hover} : {hover : boolean} )  => {
             position={Position.Bottom}
             id="bottom-source"
             style={{
-            ...handleStyle,
-            left: '50%',
-            bottom:  hover ? -5 : 0,
-            transform: 'translateX(-50%)',
+                ...handleStyle,
+                bottom : hover ? 0 : 5 ,
             opacity: hover ? 1 : 0,
             }}
         />
@@ -93,9 +99,7 @@ const TitleNodeHandles = ({hover} : {hover : boolean} )  => {
             id="left-source"
             style={{
             ...handleStyle,
-            top: '50%',
-            left:  hover ? -5 : 0,
-            transform: 'translateY(-50%)',
+            left : hover ? 0 : 5 ,
             opacity: hover ? 1 : 0,
             }}
         />
@@ -105,9 +109,7 @@ const TitleNodeHandles = ({hover} : {hover : boolean} )  => {
             id="right-source"
             style={{
             ...handleStyle,
-            top: '50%',
-            right:   hover ? -5 : 0,           // small offset to remove edge gap
-            transform: 'translateY(-50%)',
+            right : hover ? 0 : 5 ,
             opacity:   hover ? 1 : 0,
             }}
         />
