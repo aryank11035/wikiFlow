@@ -8,8 +8,8 @@ function initTitle() {
     }
     
     const pageTitle = titleTag.textContent;
-    console.log('Page title:', pageTitle);
-    
+  
+  
     // Create the heading element
     const heading = document.createElement('h1');
     heading.id = 'firstHeading';
@@ -23,7 +23,7 @@ function initTitle() {
         document.body.appendChild(heading);
     }
     
-    console.log('Title inserted:', heading);
+
 }
 
 if (document.readyState === 'loading') {

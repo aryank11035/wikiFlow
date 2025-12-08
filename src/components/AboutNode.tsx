@@ -1,35 +1,29 @@
-import { useState } from "react";
+import { useState } from "react"
 import { CloseBar } from "./Closebar"
-import { IFrameNode } from "./IFrameNode"
-import { Handle, Position } from "@xyflow/react";
-import { handleStyle } from "./MainPageNode";
+import { Handle, Position } from "@xyflow/react"
+import { handleStyle } from "./MainPageNode"
 
-export const TitlePageNode = ({id , data} : {id : string ,data : any}) => {
-
-    const title = data?.data
-    if (!title) return null;
+export const AboutNode = () => {
 
     const [hover , onHover] = useState<boolean>(false)
-    const [show ,setShow] = useState<string | null >(id)
-    return(
-        <>
-     
-            <div className="w-fit h-fit shadow-2xl relative" 
-                 onMouseEnter={() => onHover(true) }
-                 onMouseLeave={() => onHover(false) }>
-                <CloseBar/>
-                <div className="relative w-fit h-fit bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-4 inset-shadow-sm  inset-shadow-neutral-300/80 ">
-                
-                    <IFrameNode linkpage={`title?title=${encodeURIComponent(title)}`} nodeId={id} mainpage={false} title={title}/>
-                </div>
-            <TitleNodeHandles hover={hover} onHover={onHover}/>    
-            </div>
-        </>
+
+    
+    return (
+        <div className="w-fit h-fit shadow-2xl relative" 
+            onMouseEnter={() => onHover(true) }
+            onMouseLeave={() => onHover(false) }
+        >
+            <CloseBar/>
+            <div className="relative w-70   h-100 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/80"
+                   
+            ></div>
+            <TitleNodeHandles hover={hover} onHover={onHover}/>
+        </div>
     )
 }
 
 
-export const TitleNodeHandles = ({hover , onHover} : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
+const TitleNodeHandles = ({hover , onHover} : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
 
 
     return (

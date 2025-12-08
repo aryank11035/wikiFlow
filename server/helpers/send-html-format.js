@@ -4,7 +4,11 @@ export async function SendHTMLFormat(mainPageResponse, res) {
     // Add custom styles and script to the HTML
     const styledHtml = html.replace(
         '</head>',
-        `<style>
+        `
+        <link rel="stylesheet" href="https://en.wikipedia.org/w/load.php?modules=skins.vector.styles&only=styles">
+        <link rel="stylesheet" href="https://en.wikipedia.org/w/load.php?modules=site.styles&only=styles">
+        <link rel="stylesheet" href="https://en.wikipedia.org/w/index.php?title=MediaWiki:Common.css&action=raw&ctype=text/css">
+            <style>
             /* Hide scrollbar inside iframe */
             ::-webkit-scrollbar {
                 display: none;
@@ -12,11 +16,13 @@ export async function SendHTMLFormat(mainPageResponse, res) {
             body {
                 -ms-overflow-style: none;
                 scrollbar-width: none;
-                padding: 10px;
-                margin: 0;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Lato, Helvetica, Arial, sans-serif;
-                font-size: 0.85rem;
-            }
+                padding: 20px;
+                margin: 0;  
+                font-family: sans-serif;
+                font-weight: normal;
+                line-height : 32px;
+                font-size: 1rem;
+            }           
         </style>
         <script src="http://localhost:3001/helpers/click-event.js" type="module"></script>
         </head>`
@@ -37,7 +43,11 @@ export async function SendHTMLFormatforTitle(mainPageResponse , res) {
     // Add custom styles and script to the HTML
     const styledHtml = html.replace(
         '</head>',
-        `<style>
+        `
+         <link rel="stylesheet" href="https://en.wikipedia.org/w/load.php?modules=skins.vector.styles&only=styles">
+        <link rel="stylesheet" href="https://en.wikipedia.org/w/load.php?modules=site.styles&only=styles">
+        <link rel="stylesheet" href="https://en.wikipedia.org/w/index.php?title=MediaWiki:Common.css&action=raw&ctype=text/css">
+        <style>
             /* Hide scrollbar inside iframe */
             ::-webkit-scrollbar {
                 display: none;
@@ -45,10 +55,12 @@ export async function SendHTMLFormatforTitle(mainPageResponse , res) {
             body {
                 -ms-overflow-style: none;
                 scrollbar-width: none;
-                padding: 10px;
-                margin: 0;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Lato, Helvetica, Arial, sans-serif;
-                font-size: 0.85rem;
+                padding: 20px;
+                margin: 0;  
+                font-family: sans-serif;
+                font-weight: normal;
+                line-height : 32px;
+                font-size: 1rem;
             }
         </style>
         <script src="http://localhost:3001/helpers/click-event.js" type="module"></script>

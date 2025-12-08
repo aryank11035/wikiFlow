@@ -1,17 +1,22 @@
 import './App.css'
 
-import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState  } from '@xyflow/react';
-import type { Edge, Node } from '@xyflow/react';
+import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState, useReactFlow  } from '@xyflow/react';
+import type { Edge, Node, ReactFlowInstance } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';  
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {  InfoNode, MainPageNode } from './components/MainPageNode';
 import { TitlePageNode } from './components/TitlePageNode';
+import { ImagePageNode } from './components/ImgPageNode';
+import { createNewNode } from './helpers/create-node';
+import { AboutNode } from './components/AboutNode';
 
 
 const nodeTypes = {
   mainPageNode : MainPageNode,
   infoNode : InfoNode,
-  titlePageNode : TitlePageNode
+  titlePageNode : TitlePageNode,
+  imagePageNode : ImagePageNode ,
+  aboutNode : AboutNode ,
 }
 
 
@@ -19,31 +24,52 @@ const nodeTypes = {
 const initialNodes = [
   {
     id: 'mainPageNode',
-    position: { x: 0, y: 0 },
+    position: { x: -200 , y: 0 },
     data: { label: 'mainPageNode' },
     type: 'mainPageNode',
   },
   {
-    id: 'titlePageNode',
-    position: { x: 1000, y: 0 },
-    data: { label: 'titlePageNode' },
-    type : 'titlePageNode'
+    id: 'aboutNode',
+    position: { x: 1000 , y: 25 },
+    data: { label: 'aboutNode' },
+    type: 'aboutNode',
   },
-
+  
 ];
+
 const initialEdges = [
   {
-    id: 'mainPageNode-titlePageNode',
+    id: 'mainPageNode-aboutNode',
     source: 'mainPageNode',
     sourceHandle : 'right-source',
-    target: 'titlePageNode',
+    target: 'aboutNode',
     targetHandle: 'left-target'
-    // type:'bezier',
   },
 ];
 
 export default function App() {
  
+   const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
+
+  // Fit view on load
+  const onLoad = (rfi: ReactFlowInstance) => {
+    reactFlowInstance.current = rfi;
+    rfi.fitView();
+  };
+
+  // Fit view on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (reactFlowInstance.current) {
+        reactFlowInstance.current.fitView();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
 
   const [nodes, setNodes ,onNodesChange] = useNodesState<any>(initialNodes);
   const [edges, setEdges , onEdgesChange] = useEdgesState(initialEdges);
@@ -54,7 +80,8 @@ export default function App() {
     },
     [],
   );
- 
+  
+
   const handleEdgesChange = ( draggedNode : Node ) => {
 
     setEdges((currentEdge) => {
@@ -80,6 +107,7 @@ export default function App() {
 
   const calculateBestHandles = (sourceNode: any, targetNode: any) => {
 
+    
     
     const sourceCenterX = sourceNode.position.x + (sourceNode.measured?.width || 0) / 2;
     const sourceCenterY = sourceNode.position.y + (sourceNode.measured?.height || 0) / 2;
@@ -121,20 +149,14 @@ export default function App() {
         const newNodeId = `title-${title.replace(/\s+/g, '-')}-${Date.now()}`;   
         const sourceNode = nodes.find((n: any) => n.id === sourceNodeId);
         const newPosition = {
-          x: sourceNode ? sourceNode.position.x + 400 : Math.random() * 500,
-          y: sourceNode ? sourceNode.position.y + Math.random() * 100 - 50 : Math.random() * 500,
-        };
-
-        const newNode = {
-          id: newNodeId,
-          position: newPosition,
-          data: { 
-            label: title,
-            title: title 
-          },
-          type: 'titlePageNode',
+          x: !sourceNodeId.includes('title') ? sourceNode.position.x + 1200 :sourceNode.position.x + 800,
+          y:  sourceNode.position.y + Math.random() * 100 - 50 ,
         };
         
+        const newNode = createNewNode(newNodeId , newPosition , title , 'titlePageNode' , title )
+        
+        
+
         // Create new edge
         const newEdge = {
           id: `${sourceNodeId}-${newNodeId}`,
@@ -148,7 +170,47 @@ export default function App() {
         setNodes((nds: any) => [...nds, newNode]);
         setEdges((eds) => [...eds, newEdge]);
       }
+      if(e.data.type === 'WIKI_IMG_CLICKED'){
+       
+        const { src , sourceNodeId} =  e.data
+      
+        const newNodeId = `img-${src}-${Date.now()}`
+        const sourceNode = nodes.find((n : any) => n.id === sourceNodeId)
+     
+        const existingChildren = nodes.filter(
+          n => n.parentId === sourceNodeId
+        ).length;
+
+        console.log(sourceNode)
+        if(!sourceNode) console.log('ther is no node')
+        
+       
+
+
+        const newPosition = {
+          x: sourceNodeId.includes('title') ? sourceNode.position.x + 730 : sourceNode.position.x + 1000 ,
+          y: sourceNode.position.y + Math.random() 
+        };
+
+        
+
+        const newNode = createNewNode(newNodeId , newPosition , src , 'imagePageNode' , src )
+
+         const newEdge = {
+          id: `${sourceNodeId}-${newNodeId}`,
+          source: sourceNodeId,
+          sourceHandle:'right-source',
+          target: newNodeId,
+          targetHandle: 'left-target',
+
+        };
+
+        setNodes((nds: any) => [...nds, newNode]);
+        setEdges((eds) => [...eds, newEdge]);
+
+      }
     }
+
 
     window.addEventListener('message', handleMessage);
     return () => {
@@ -158,7 +220,7 @@ export default function App() {
 
   
   return (
-    <div style={{ height: '100vh', width: '100%', overflow: 'auto' }} >
+    <div style={{ height: '100vh', width: '100%'}} ref={reactFlowWrapper}>
       {/* forget react flow temporarily */}
       <ReactFlow 
         nodes={nodes} 
@@ -168,7 +230,6 @@ export default function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeDrag={onNodeDrag}
-
         style={{ backgroundColor: "#ffffff" }}
         zoomOnScroll={false}
         fitView
@@ -177,7 +238,6 @@ export default function App() {
            color="#ffffff"
             gap={0}
         />
-        <Controls />
       </ReactFlow>
        {/* <MainPageNode/> */}
     </div>

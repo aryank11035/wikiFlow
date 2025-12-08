@@ -1,20 +1,43 @@
+let NODE_ID = null;
+
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  NODE_ID = params.get('nodeId') || 'mainPageNode';
+ 
+});
+
+
+
 document.addEventListener('click' , async (e) => {
     const clickedLink = e.target
+
+    if(clickedLink.tagName === "A") {
+        e.preventDefault()
+        const title = clickedLink.getAttribute('title')
+    
+        if(!title) return 
     
 
-    if(clickedLink.tagName !== "A") return null
-    e.preventDefault()
-    const title = clickedLink.getAttribute('title')
+        window.parent.postMessage({
+            type: 'WIKI_LINK_CLICKED',
+            title: title,
+            sourceNodeId: NODE_ID
+        }, 'http://localhost:5173');
+    }
 
-    if(!title) return 
+    if(clickedLink.tagName === 'IMG'){
+        e.preventDefault()
+        const src = clickedLink.getAttribute('src') 
+   
+        if( !src ) return
 
-    const urlParams = new URLSearchParams(window.location.search)
-    const sourceNodeId = urlParams.get('nodeId') || 'mainPageNode';
+        window.parent.postMessage({
+            type: 'WIKI_IMG_CLICKED',
+            src : src ,
+            sourceNodeId: NODE_ID
+        }, 'http://localhost:5173');
+       
 
-    window.parent.postMessage({
-        type: 'WIKI_LINK_CLICKED',
-        title: title,
-        sourceNodeId: sourceNodeId
-    }, 'http://localhost:5173');
+    }
 })
 

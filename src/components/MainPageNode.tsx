@@ -36,7 +36,7 @@ export const MainPageNode = ({id} : {id : string}) => {
 
                 <CloseBar/>
                 
-                <div className="relative w-230 h-130 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/80"
+                <div className="relative w-250 h-170 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-4 inset-shadow-sm  inset-shadow-neutral-300/80 "
                    
                 >
                     <IFrameNode linkpage='mainpage' nodeId={id} mainpage={true}/>
@@ -114,7 +114,7 @@ const MainNodeHandles = ({hover ,onHover} : {hover : boolean , onHover : React.D
             id="bottom-source"
             style={{
             ...handleStyle,
-            bottom : hover ? 0 : 5 ,
+            bottom : hover ? 0 : 5,
             opacity: hover ? 1 : 0,
             }}
         />
