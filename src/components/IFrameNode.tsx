@@ -1,4 +1,4 @@
-export const IFrameNode = ({linkpage, nodeId , mainpage , title } : {linkpage : string, nodeId?: string , mainpage : boolean , title ?: string} ) => {
+export const IFrameNode = ({linkpage = 'mainpage', nodeId = 'mainPageNode', mainpage , title } : {linkpage : string, nodeId?: string , mainpage : boolean , title ?: string} ) => {
     
     const seperator = linkpage.includes('?') ? '&': '?'
 

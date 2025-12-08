@@ -34,7 +34,7 @@ export const MainPageNode = ({id} : {id : string}) => {
             onMouseLeave={() => onHover(false) }
         >
 
-                <CloseBar/>
+                <CloseBar id='mainPageNode'/>
                 
                 <div className="relative w-250 h-170 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-4 inset-shadow-sm  inset-shadow-neutral-300/80 "
                    

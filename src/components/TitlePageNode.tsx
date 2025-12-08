@@ -11,13 +11,14 @@ export const TitlePageNode = ({id , data} : {id : string ,data : any}) => {
 
     const [hover , onHover] = useState<boolean>(false)
     const [show ,setShow] = useState<string | null >(id)
+
     return(
         <>
      
             <div className="w-fit h-fit shadow-2xl relative" 
                  onMouseEnter={() => onHover(true) }
                  onMouseLeave={() => onHover(false) }>
-                <CloseBar/>
+                <CloseBar id={id}/>
                 <div className="relative w-fit h-fit bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-4 inset-shadow-sm  inset-shadow-neutral-300/80 ">
                 
                     <IFrameNode linkpage={`title?title=${encodeURIComponent(title)}`} nodeId={id} mainpage={false} title={title}/>

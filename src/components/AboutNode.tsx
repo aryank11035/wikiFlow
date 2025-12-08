@@ -13,7 +13,7 @@ export const AboutNode = () => {
             onMouseEnter={() => onHover(true) }
             onMouseLeave={() => onHover(false) }
         >
-            <CloseBar/>
+            <CloseBar id='aboutNode'/>
             <div className="relative w-70   h-100 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/80"
                    
             ></div>

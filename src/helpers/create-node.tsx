@@ -2,7 +2,10 @@ export const createNewNode = (newNodeId : string , newPosition : { x : number , 
      
     return {
         id: newNodeId,
-        position: newPosition,
+        position: {
+            x : newPosition.x ,
+            y : newPosition.y 
+        },
         data: { 
             label: title,
             data : title ,

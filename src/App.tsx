@@ -1,6 +1,6 @@
 import './App.css'
 
-import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState, useReactFlow  } from '@xyflow/react';
+import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState, useReactFlow ,Panel   } from '@xyflow/react';
 import type { Edge, Node, ReactFlowInstance } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';  
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -9,6 +9,7 @@ import { TitlePageNode } from './components/TitlePageNode';
 import { ImagePageNode } from './components/ImgPageNode';
 import { createNewNode } from './helpers/create-node';
 import { AboutNode } from './components/AboutNode';
+import { MenuPanel } from './components/panels/menu-panel';
 
 
 const nodeTypes = {
@@ -19,7 +20,7 @@ const nodeTypes = {
   aboutNode : AboutNode ,
 }
 
-
+let yPos = 200
 
 const initialNodes = [
   {
@@ -149,8 +150,8 @@ export default function App() {
         const newNodeId = `title-${title.replace(/\s+/g, '-')}-${Date.now()}`;   
         const sourceNode = nodes.find((n: any) => n.id === sourceNodeId);
         const newPosition = {
-          x: !sourceNodeId.includes('title') ? sourceNode.position.x + 1200 :sourceNode.position.x + 800,
-          y:  sourceNode.position.y + Math.random() * 100 - 50 ,
+          x: !sourceNodeId.includes('title') ? sourceNode.position.x + 1200 :sourceNode.position.x + 100,
+          y:  sourceNode.position.y  ,
         };
         
         const newNode = createNewNode(newNodeId , newPosition , title , 'titlePageNode' , title )
@@ -177,19 +178,14 @@ export default function App() {
         const newNodeId = `img-${src}-${Date.now()}`
         const sourceNode = nodes.find((n : any) => n.id === sourceNodeId)
      
-        const existingChildren = nodes.filter(
-          n => n.parentId === sourceNodeId
-        ).length;
-
-        console.log(sourceNode)
-        if(!sourceNode) console.log('ther is no node')
+      
         
        
 
 
         const newPosition = {
-          x: sourceNodeId.includes('title') ? sourceNode.position.x + 730 : sourceNode.position.x + 1000 ,
-          y: sourceNode.position.y + Math.random() 
+          x: sourceNode.position.x  ,
+          y: sourceNode.position.y + yPos
         };
 
         
@@ -214,6 +210,7 @@ export default function App() {
 
     window.addEventListener('message', handleMessage);
     return () => {
+      yPos  += 200 
       window.removeEventListener('message', handleMessage);
     };
   },[nodes])
@@ -223,6 +220,7 @@ export default function App() {
     <div style={{ height: '100vh', width: '100%'}} ref={reactFlowWrapper}>
       {/* forget react flow temporarily */}
       <ReactFlow 
+        proOptions={{ hideAttribution: true }}  
         nodes={nodes} 
         edges={edges}   
         nodeTypes={nodeTypes}
@@ -231,12 +229,20 @@ export default function App() {
         onConnect={onConnect}
         onNodeDrag={onNodeDrag}
         style={{ backgroundColor: "#ffffff" }}
-        zoomOnScroll={false}
         fitView
       >
+        <Panel position="top-left">
+         <MenuPanel/>
+        </Panel>
+        <Panel position='bottom-right'>
+          <div className='h-15 w-50  border border-neutral-300 rounded-sm inset-shadow-sm  inset-shadow-neutral-300/80 backdrop-blur-2xl'>
+
+          </div>
+        </Panel>
         <Background 
            color="#ffffff"
             gap={0}
+            
         />
       </ReactFlow>
        {/* <MainPageNode/> */}
