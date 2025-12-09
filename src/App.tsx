@@ -9,7 +9,7 @@ import { TitlePageNode } from './components/TitlePageNode';
 import { ImagePageNode } from './components/ImgPageNode';
 import { createNewNode } from './helpers/create-node';
 import { AboutNode } from './components/AboutNode';
-import { MenuPanel } from './components/panels/menu-panel';
+import { MenuPanel, SearchPanel } from './components/panels/panels';
 
 
 const nodeTypes = {
@@ -177,15 +177,10 @@ export default function App() {
       
         const newNodeId = `img-${src}-${Date.now()}`
         const sourceNode = nodes.find((n : any) => n.id === sourceNodeId)
-     
-      
-        
-       
-
 
         const newPosition = {
-          x: sourceNode.position.x  ,
-          y: sourceNode.position.y + yPos
+          x: !sourceNodeId.includes('title') ? sourceNode.position.x  + 1200 : sourceNode.position.x + 800,
+          y: sourceNode.position.y 
         };
 
         
@@ -208,13 +203,20 @@ export default function App() {
     }
 
 
+    
+    
+    
+    
     window.addEventListener('message', handleMessage);
     return () => {
-      yPos  += 200 
       window.removeEventListener('message', handleMessage);
     };
   },[nodes])
-
+  
+  const handleMainPage = () => {
+    const newNode = createNewNode(`mainPageNode-${Date.now()}` , {x : 600 , y :100} , 'mainPageNode' , 'mainPageNode' , 'mainPageNode' )
+    setNodes((nds: any) => [...nds, newNode]);
+  }
   
   return (
     <div style={{ height: '100vh', width: '100%'}} ref={reactFlowWrapper}>
@@ -231,14 +233,13 @@ export default function App() {
         style={{ backgroundColor: "#ffffff" }}
         fitView
       >
-        <Panel position="top-left">
-         <MenuPanel/>
+        <Panel position='top-center'>
+            <SearchPanel/>
         </Panel>
-        <Panel position='bottom-right'>
-          <div className='h-15 w-50  border border-neutral-300 rounded-sm inset-shadow-sm  inset-shadow-neutral-300/80 backdrop-blur-2xl'>
-
-          </div>
+        <Panel position="bottom-center">
+         <MenuPanel handleMainPage={handleMainPage}/>
         </Panel>
+        
         <Background 
            color="#ffffff"
             gap={0}
