@@ -1,6 +1,7 @@
 import { Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { FaWikipediaW } from "react-icons/fa";
+import { useNodeAction } from "../../helpers/create-node";
 
 export const MenuPanel = ({handleMainPage} : {handleMainPage : () => void}) => {
     return (
@@ -35,7 +36,8 @@ export const SearchPanel = () => {
 
     const [search , setSearch] = useState<string>('')
     const [searchedTitle , setSearchedTitle] = useState<any | undefined>()
-    const abortRef = useRef<AbortController | null>(null)
+
+    const { createNewNode } = useNodeAction()
 
     useEffect(() => {
     if (search.trim().length < 2) {
@@ -44,13 +46,12 @@ export const SearchPanel = () => {
     }
 
     const handler = setTimeout(async () => {
-      if (abortRef.current) abortRef.current.abort(); // cancel old
-      abortRef.current = new AbortController();
+      
 
       try {
         const response = await fetch(
           `https://api.wikimedia.org/core/v1/wikipedia/en/search/title?q=${search}&limit=10`,
-          { signal: abortRef.current.signal }
+         
         );
 
         if (!response.ok) return;
@@ -63,9 +64,10 @@ export const SearchPanel = () => {
   }, [search]);
 
 
-    const onTitleClick = () => {
+    const onTitleClick = (title : string ) => {
         setSearch('')
         setSearchedTitle(undefined)
+        createNewNode(`title-${title.replace(/\s+/g, '-')}-${Date.now()}` , {x : 600 , y :100} , title , 'titlePageNode' , title)
     }
 
     return  (
@@ -86,7 +88,7 @@ export const SearchPanel = () => {
                     {
                         
                         searchedTitle.map(({title , description} : { title : string , description : string}) => (
-                            <button className="flex flex-col w-full py-2 cursor-pointer px-2 hover:bg-neutral-100 rounded-sm duration-200 active:scale-98" key={title} onClick={onTitleClick}>
+                            <button className="flex flex-col w-full py-2 cursor-pointer px-2 hover:bg-white/30 rounded-sm duration-200 active:scale-98" key={title} onClick={() => onTitleClick(title)}>
                                 <h1 className="text-xl text-left w-full font-semibold">{title}</h1>
                                 <p className="text-neutral-500 text-sm text-left">{description}</p>
                                 <div className="w-full  border-t border-t-neutral-400 mt-3 "></div>

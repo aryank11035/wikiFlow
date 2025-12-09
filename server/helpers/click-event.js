@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('click' , async (e) => {
     const clickedLink = e.target
+    console.log(clickedLink)
 
     if(clickedLink.tagName === "A") {
         e.preventDefault()
@@ -39,5 +40,8 @@ document.addEventListener('click' , async (e) => {
        
 
     }
+
+
+    
 })
 

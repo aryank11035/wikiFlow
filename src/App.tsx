@@ -7,9 +7,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {  InfoNode, MainPageNode } from './components/MainPageNode';
 import { TitlePageNode } from './components/TitlePageNode';
 import { ImagePageNode } from './components/ImgPageNode';
-import { createNewNode } from './helpers/create-node';
 import { AboutNode } from './components/AboutNode';
 import { MenuPanel, SearchPanel } from './components/panels/panels';
+import { useNodeAction } from './helpers/create-node';
 
 
 const nodeTypes = {
@@ -50,31 +50,11 @@ const initialEdges = [
 
 export default function App() {
  
-   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
-
-  // Fit view on load
-  const onLoad = (rfi: ReactFlowInstance) => {
-    reactFlowInstance.current = rfi;
-    rfi.fitView();
-  };
-
-  // Fit view on window resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (reactFlowInstance.current) {
-        reactFlowInstance.current.fitView();
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-
   const [nodes, setNodes ,onNodesChange] = useNodesState<any>(initialNodes);
   const [edges, setEdges , onEdgesChange] = useEdgesState(initialEdges);
   
+  const { createNewNode } = useNodeAction()
+
   const onConnect = useCallback(
     (connection: any) => {
       setEdges((edgesSnapshot) => addEdge(connection, edgesSnapshot))
@@ -154,10 +134,9 @@ export default function App() {
           y:  sourceNode.position.y  ,
         };
         
-        const newNode = createNewNode(newNodeId , newPosition , title , 'titlePageNode' , title )
         
         
-
+        
         // Create new edge
         const newEdge = {
           id: `${sourceNodeId}-${newNodeId}`,
@@ -168,7 +147,8 @@ export default function App() {
         };
         
         // Update state
-        setNodes((nds: any) => [...nds, newNode]);
+        
+        createNewNode(newNodeId , newPosition , title , 'titlePageNode' , title )
         setEdges((eds) => [...eds, newEdge]);
       }
       if(e.data.type === 'WIKI_IMG_CLICKED'){
@@ -185,18 +165,18 @@ export default function App() {
 
         
 
-        const newNode = createNewNode(newNodeId , newPosition , src , 'imagePageNode' , src )
-
-         const newEdge = {
+        
+        const newEdge = {
           id: `${sourceNodeId}-${newNodeId}`,
           source: sourceNodeId,
           sourceHandle:'right-source',
           target: newNodeId,
           targetHandle: 'left-target',
-
+          
         };
-
-        setNodes((nds: any) => [...nds, newNode]);
+        
+        
+        createNewNode(newNodeId , newPosition , src , 'imagePageNode' , src )
         setEdges((eds) => [...eds, newEdge]);
 
       }
@@ -214,13 +194,13 @@ export default function App() {
   },[nodes])
   
   const handleMainPage = () => {
-    const newNode = createNewNode(`mainPageNode-${Date.now()}` , {x : 600 , y :100} , 'mainPageNode' , 'mainPageNode' , 'mainPageNode' )
-    setNodes((nds: any) => [...nds, newNode]);
+    createNewNode(`mainPageNode-${Date.now()}` , {x : 600 , y :100} , 'mainPageNode' , 'mainPageNode' , 'mainPageNode' )
+  
   }
   
   return (
-    <div style={{ height: '100vh', width: '100%'}} ref={reactFlowWrapper}>
-      {/* forget react flow temporarily */}
+    <div style={{ height: '100vh', width: '100%'}}>
+     
       <ReactFlow 
         proOptions={{ hideAttribution: true }}  
         nodes={nodes} 
@@ -246,7 +226,7 @@ export default function App() {
             
         />
       </ReactFlow>
-       {/* <MainPageNode/> */}
+       
     </div>
   );
 }
