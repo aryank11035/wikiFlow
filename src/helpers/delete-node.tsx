@@ -8,3 +8,19 @@ export function useDeleteNode () {
         setEdges((edges) => edges.filter(e => e.source !== id && e.target !== id));
     }
 }
+
+export const useDeleteActions = () => {
+    const { setEdges , setNodes } = useReactFlow()
+
+
+    const deleteEdge = ( id : string) => {
+        document.addEventListener('keydown' , (e : KeyboardEvent) => {
+            if(e.key === 'Delete') {
+                setEdges((edges => edges.filter(edg => edg.id !== id )))
+            }
+        })
+
+    }
+
+    return { deleteEdge }
+}

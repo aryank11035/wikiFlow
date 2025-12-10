@@ -9,6 +9,9 @@
     scrollbar-width: none;
   }
 }
+.react-flow__nodesselection-rect {
+  display: none;
+}
 
 html, body, #root {
   height: 100%;

@@ -1,0 +1,56 @@
+
+import { BaseEdge, getBezierPath, type EdgeProps } from '@xyflow/react';
+
+function CustomClickableEdge({ 
+  id, 
+  sourceX, 
+  sourceY, 
+  targetX, 
+  targetY, 
+  sourcePosition, 
+  targetPosition, 
+  style = {}, 
+  markerEnd,
+  selected
+}: EdgeProps) {
+  const [edgePath] = getBezierPath({
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+  });
+
+  const edgeStyle = selected 
+    ? { 
+        ...style, 
+        stroke: '#f97316', 
+        strokeWidth: 2,
+        strokeDasharray: '5, 5', 
+      } 
+    : {
+        ...style,
+        stroke: '#b1b1b7',
+        strokeWidth: 2,
+      };
+
+  return (
+    <>
+      <BaseEdge path={edgePath} markerEnd={markerEnd} style={edgeStyle} />
+      {selected && (
+        <BaseEdge 
+          path={edgePath} 
+          style={{
+            stroke: '#fed7aa', // orange-200 with opacity
+            strokeWidth: 2,
+            strokeOpacity: 0.5,
+            strokeDasharray: '5, 5',
+          }} 
+        />
+      )}
+    </>
+  );
+}
+
+export default CustomClickableEdge;

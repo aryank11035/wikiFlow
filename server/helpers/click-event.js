@@ -24,6 +24,8 @@ document.addEventListener('click' , async (e) => {
             title: title,
             sourceNodeId: NODE_ID
         }, 'http://localhost:5173');
+
+        return
     }
 
     if(clickedLink.tagName === 'IMG'){
@@ -38,10 +40,13 @@ document.addEventListener('click' , async (e) => {
             sourceNodeId: NODE_ID
         }, 'http://localhost:5173');
        
-
+        return
     }
 
+    // for test
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Click blocked - only links and images are allowed');
 
-    
 })
 

@@ -1,7 +1,7 @@
 import './App.css'
 
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState, useReactFlow ,Panel   } from '@xyflow/react';
-import type { Edge, Node, ReactFlowInstance } from '@xyflow/react';
+import type { Connection, Edge, Node, ReactFlowInstance } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';  
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {  InfoNode, MainPageNode } from './components/MainPageNode';
@@ -10,6 +10,8 @@ import { ImagePageNode } from './components/ImgPageNode';
 import { AboutNode } from './components/AboutNode';
 import { MenuPanel, SearchPanel } from './components/panels/panels';
 import { useNodeAction } from './helpers/create-node';
+import CustomClickableEdge from './components/CustomEdge';
+import { useDeleteActions } from './helpers/delete-node';
 
 
 const nodeTypes = {
@@ -19,8 +21,9 @@ const nodeTypes = {
   imagePageNode : ImagePageNode ,
   aboutNode : AboutNode ,
 }
-
-let yPos = 200
+const edgeTypes = {
+  'customEdge' : CustomClickableEdge
+}
 
 const initialNodes = [
   {
@@ -44,20 +47,29 @@ const initialEdges = [
     source: 'mainPageNode',
     sourceHandle : 'right-source',
     target: 'aboutNode',
-    targetHandle: 'left-target'
+    targetHandle: 'left-target',
+    type: 'customEdge',
   },
 ];
 
 export default function App() {
  
   const [nodes, setNodes ,onNodesChange] = useNodesState<any>(initialNodes);
-  const [edges, setEdges , onEdgesChange] = useEdgesState(initialEdges);
-  
+  const [edges, setEdges , onEdgesChange] = useEdgesState<any>(initialEdges);
+
   const { createNewNode } = useNodeAction()
+  const { deleteEdge } = useDeleteActions()
+
 
   const onConnect = useCallback(
-    (connection: any) => {
-      setEdges((edgesSnapshot) => addEdge(connection, edgesSnapshot))
+    (connection: Connection) => {
+      setEdges((eds) => addEdge(
+        {
+          ...connection ,
+          type : 'customEdge'
+        },
+        eds
+      ))
     },
     [],
   );
@@ -133,10 +145,7 @@ export default function App() {
           x: !sourceNodeId.includes('title') ? sourceNode.position.x + 1200 :sourceNode.position.x + 100,
           y:  sourceNode.position.y  ,
         };
-        
-        
-        
-        
+    
         // Create new edge
         const newEdge = {
           id: `${sourceNodeId}-${newNodeId}`,
@@ -144,6 +153,7 @@ export default function App() {
           sourceHandle:'right-source',
           target: newNodeId,
           targetHandle: 'left-target',
+          type : 'customEdge'
         };
         
         // Update state
@@ -163,30 +173,23 @@ export default function App() {
           y: sourceNode.position.y 
         };
 
-        
-
-        
         const newEdge = {
           id: `${sourceNodeId}-${newNodeId}`,
           source: sourceNodeId,
           sourceHandle:'right-source',
           target: newNodeId,
           targetHandle: 'left-target',
+          type : 'customEdge'
           
         };
         
         
         createNewNode(newNodeId , newPosition , src , 'imagePageNode' , src )
-        setEdges((eds) => [...eds, newEdge]);
+        setEdges((eds) => [...eds, newEdge]); 
 
       }
     }
 
-
-    
-    
-    
-    
     window.addEventListener('message', handleMessage);
     return () => {
       window.removeEventListener('message', handleMessage);
@@ -195,29 +198,34 @@ export default function App() {
   
   const handleMainPage = () => {
     createNewNode(`mainPageNode-${Date.now()}` , {x : 600 , y :100} , 'mainPageNode' , 'mainPageNode' , 'mainPageNode' )
-  
   }
   
+  const onEdgeClick = useCallback((event : any ,edge : Edge) => {
+    deleteEdge(edge.id)
+  },[])
+
   return (
     <div style={{ height: '100vh', width: '100%'}}>
      
       <ReactFlow 
         proOptions={{ hideAttribution: true }}  
         nodes={nodes} 
-        edges={edges}   
+        edges={edges} 
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeDrag={onNodeDrag}
+        onEdgeClick={onEdgeClick}
         style={{ backgroundColor: "#ffffff" }}
         fitView
       >
         <Panel position='top-center'>
-            <SearchPanel/>
+          <SearchPanel/>
         </Panel>
         <Panel position="bottom-center">
-         <MenuPanel handleMainPage={handleMainPage}/>
+          <MenuPanel handleMainPage={handleMainPage}/>
         </Panel>
         
         <Background 

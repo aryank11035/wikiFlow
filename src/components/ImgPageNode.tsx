@@ -18,9 +18,14 @@ export const ImagePageNode = ({id , data } : {id : string , data :any}) => {
             onMouseEnter={() => onHover(true)}
             onMouseLeave={() => onHover(false)}
         >
-            <button onClick={() => deleteNode(id)} className="absolute top-1 right-1 text-white p-1  hover:text-neutral-900 hover:bg-white duration-300  cursor-pointer size-20 bg-neutral-500/50 w-fit h-fit rounded-2xl">
-                <X size={20} />
-            </button>
+            {
+                hover && (
+                    <button onClick={() => deleteNode(id)} className="absolute top-1 right-1 text-white p-1  hover:text-neutral-900 hover:bg-white duration-300  cursor-pointer size-20 bg-neutral-500/50 w-fit h-fit rounded-2xl">
+                        <X size={20} />
+                    </button>
+                )
+            }
+
             <img
                 id='the-iframe'
                 src={src}   
