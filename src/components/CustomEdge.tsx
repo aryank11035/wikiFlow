@@ -25,7 +25,7 @@ function CustomClickableEdge({
   const edgeStyle = selected 
     ? { 
         ...style, 
-        stroke: '#f97316', 
+        stroke: '#4299e1', 
         strokeWidth: 2,
         strokeDasharray: '5, 5', 
       } 
@@ -42,7 +42,7 @@ function CustomClickableEdge({
         <BaseEdge 
           path={edgePath} 
           style={{
-            stroke: '#fed7aa', // orange-200 with opacity
+            stroke: '#4299e1', // orange-200 with opacity
             strokeWidth: 2,
             strokeOpacity: 0.5,
             strokeDasharray: '5, 5',

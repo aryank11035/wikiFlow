@@ -60,19 +60,31 @@ export default function App() {
   const { createNewNode } = useNodeAction()
   const { deleteEdge } = useDeleteActions()
 
-
   const onConnect = useCallback(
-    (connection: Connection) => {
-      setEdges((eds) => addEdge(
+  (connection: Connection) => {
+    setEdges((eds) => {
+      // remove any edge connected to this same target
+      const filtered = eds.filter(
+        (e) => e.target !== connection.target
+      );
+
+      return addEdge(
         {
-          ...connection ,
-          type : 'customEdge'
+          ...connection,
+          type: "customEdge",
         },
-        eds
-      ))
-    },
-    [],
-  );
+        filtered
+      );
+    });
+  },
+  []
+);
+
+
+
+
+
+
   
 
   const handleEdgesChange = ( draggedNode : Node ) => {

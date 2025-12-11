@@ -12,7 +12,27 @@
 .react-flow__nodesselection-rect {
   display: none;
 }
+.react-flow__selection {
+          background: rgba(59, 130, 246, 0.15) !important;
+          border: 2px solid #3b82f6 !important;
+          border-radius: 4px !important;
+        }
 
+        /* Optional: Add animation */
+        .react-flow__selection {
+          animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 rgba(59, 130, 246, 0.4);
+          }
+          50% {
+            border-color: #2563eb;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+          }
+        }
 html, body, #root {
   height: 100%;
   margin: 0;
