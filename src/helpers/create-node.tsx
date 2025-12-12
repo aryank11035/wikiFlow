@@ -12,7 +12,7 @@ export const useNodeAction =  () => {
                 y : newPosition.y 
             },
             data: { 
-                label: title,
+                label: label,
                 data : title ,
             },
             type: nodeType
