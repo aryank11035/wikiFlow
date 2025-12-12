@@ -54,7 +54,7 @@ const initialEdges = [
 
 export default function App() {
  
-  const [nodes, setNodes ,onNodesChange] = useNodesState<any>(initialNodes);
+  const [nodes ,onNodesChange] = useNodesState<any>(initialNodes);
   const [edges, setEdges , onEdgesChange] = useEdgesState<any>(initialEdges);
 
   const { createNewNode } = useNodeAction()
@@ -144,6 +144,7 @@ export default function App() {
   };
 
   const onNodeDrag = (e : React.MouseEvent , node : Node) => {
+    console.log(e)
     handleEdgesChange(node)
   }
 
@@ -218,6 +219,7 @@ export default function App() {
   }
   
   const onEdgeClick = useCallback((event : any ,edge : Edge) => {
+    console.log(event)
     deleteEdge([edge.id])
   },[])
 
