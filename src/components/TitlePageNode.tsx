@@ -10,7 +10,6 @@ export const TitlePageNode = ({id , data} : {id : string ,data : any}) => {
     if (!title) return null;
 
     const [hover , onHover] = useState<boolean>(false)
-    const [show ,setShow] = useState<string | null >(id)
 
     return(
         <>
@@ -30,7 +29,7 @@ export const TitlePageNode = ({id , data} : {id : string ,data : any}) => {
 }
 
 
-export const TitleNodeHandles = ({hover , onHover} : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
+export const TitleNodeHandles = ({hover } : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
 
 
     return (

@@ -2,7 +2,7 @@
 import { BaseEdge, getBezierPath, type EdgeProps } from '@xyflow/react';
 
 function CustomClickableEdge({ 
-  id, 
+
   sourceX, 
   sourceY, 
   targetX, 

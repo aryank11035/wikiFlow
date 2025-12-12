@@ -1,9 +1,9 @@
 import './App.css'
 
-import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState, useReactFlow ,Panel ,    } from '@xyflow/react';
-import type { Connection, Edge, Node, ReactFlowInstance } from '@xyflow/react';
+import { ReactFlow, Background,addEdge, useNodesState, useEdgesState ,Panel     } from '@xyflow/react';
+import type { Connection, Edge, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';  
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import {  InfoNode, MainPageNode } from './components/MainPageNode';
 import { TitlePageNode } from './components/TitlePageNode';
 import { ImagePageNode } from './components/ImgPageNode';

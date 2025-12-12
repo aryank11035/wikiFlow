@@ -32,7 +32,7 @@ export const AboutNode = () => {
 }
 
 
-const TitleNodeHandles = ({hover , onHover} : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
+const TitleNodeHandles = ({hover } : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
 
 
     return (

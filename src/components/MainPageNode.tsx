@@ -1,6 +1,5 @@
 import { Position, Handle } from '@xyflow/react';
-import { useRef, useState } from 'react';
-import { X } from 'lucide-react';
+import { useState } from 'react';
 import { IFrameNode } from './IFrameNode';
 import { CloseBar } from './Closebar';
 
@@ -16,9 +15,7 @@ export const handleStyle = {
     
 }
 
-function getLinkAtrribute() {
-    return null
-}
+
 
 
 export const MainPageNode = ({id} : {id : string}) => {
@@ -49,21 +46,7 @@ export const MainPageNode = ({id} : {id : string}) => {
 
 
 }   
-const MainNodeHandles = ({hover ,onHover} : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>}) => {
-
-    const [pressed,setPressed] =useState<boolean>(false)
-
-    const handlePressStart = (e : React.MouseEvent) => {
-        e.stopPropagation()
-        setPressed(true)
-
-        window.addEventListener('mouseup' , handlePressEnd)
-    }
-    const handlePressEnd = () => {
-        setPressed(false)
-
-        window.removeEventListener('mouseup' , handlePressEnd)
-    }
+const MainNodeHandles = ({hover } : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>}) => {
 
     return (
         <>
