@@ -13,14 +13,22 @@ export const useDeleteActions = () => {
     const { setEdges , setNodes } = useReactFlow()
 
 
-    const deleteEdge = ( id : string) => {
+    const deleteEdge = ( id : string[]) => {
         document.addEventListener('keydown' , (e : KeyboardEvent) => {
             if(e.key === 'Delete') {
-                setEdges((edges => edges.filter(edg => edg.id !== id )))
+                setEdges((edges => edges.filter(edg => !id.includes(edg.id) )))
             }
         })
 
-    }
+    }  
+    const deleteNode = ( id : string[]) => {
+        document.addEventListener('keydown' , (e : KeyboardEvent) => {
+            if(e.key === 'Delete') {
+                setNodes((nodes => nodes.filter(nd => !id.includes(nd.id) )))
+            }
+        })
 
-    return { deleteEdge }
+    }  
+
+    return { deleteEdge , deleteNode }
 }

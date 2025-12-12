@@ -1,6 +1,6 @@
 import './App.css'
 
-import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState, useReactFlow ,Panel   } from '@xyflow/react';
+import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, useNodesState, useEdgesState, useReactFlow ,Panel ,    } from '@xyflow/react';
 import type { Connection, Edge, Node, ReactFlowInstance } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';  
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -58,16 +58,14 @@ export default function App() {
   const [edges, setEdges , onEdgesChange] = useEdgesState<any>(initialEdges);
 
   const { createNewNode } = useNodeAction()
-  const { deleteEdge } = useDeleteActions()
+  const { deleteEdge  , deleteNode } = useDeleteActions()
 
   const onConnect = useCallback(
   (connection: Connection) => {
     setEdges((eds) => {
-      // remove any edge connected to this same target
       const filtered = eds.filter(
         (e) => e.target !== connection.target
       );
-
       return addEdge(
         {
           ...connection,
@@ -78,14 +76,21 @@ export default function App() {
     });
   },
   []
-);
+  );
+
+  const handleSelectionChange = useCallback((params : {nodes : Node[] , edges : Edge[]}) =>  {
 
 
+    if (params.nodes.length === 0 && params.edges.length === 0) return;
 
 
+    const nodesToDelete = params.nodes.map(nod => nod.id)
+    const edgesToDelete = params.edges.map(edg =>  edg.id)
 
+    deleteEdge(edgesToDelete)
+    deleteNode(nodesToDelete)
 
-  
+  },[deleteEdge,deleteNode])
 
   const handleEdgesChange = ( draggedNode : Node ) => {
 
@@ -213,7 +218,7 @@ export default function App() {
   }
   
   const onEdgeClick = useCallback((event : any ,edge : Edge) => {
-    deleteEdge(edge.id)
+    deleteEdge([edge.id])
   },[])
 
   return (
@@ -230,6 +235,7 @@ export default function App() {
         onConnect={onConnect}
         onNodeDrag={onNodeDrag}
         onEdgeClick={onEdgeClick}
+        onSelectionChange={handleSelectionChange}
         style={{ backgroundColor: "#ffffff" }}
         fitView
       >
