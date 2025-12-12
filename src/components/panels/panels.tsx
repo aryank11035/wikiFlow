@@ -16,14 +16,14 @@ export const MenuPanel = ({handleMainPage} : {handleMainPage : () => void}) => {
                 <div className="h-full flex items-center jusifty-center text-neutral-600 hover:text-black duration-200 cursor-pointer " onClick={handleMainPage}>
                     <FaWikipediaW className="size-10  "/>
                 </div>
-                <div>
+                {/* <div>
                     <Search className="size-10 text-neutral-600" strokeWidth={1.1}/>
-                </div>
+                </div> */}
             </div>
-        
+{/*         
                     <div className='h-15 w-50  border border-neutral-300 rounded-sm inset-shadow-sm  inset-shadow-neutral-300/80 backdrop-blur-2xl'>
                     
-                              </div>
+                              </div> */}
 
             </div>
 

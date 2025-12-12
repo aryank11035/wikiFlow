@@ -14,9 +14,18 @@ export const AboutNode = () => {
             onMouseLeave={() => onHover(false) }
         >
             <CloseBar id='aboutNode'/>
-            <div className="relative w-70   h-100 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/80"
+            <div className="relative w-70   h-100 bg-neutral-100  border-b border-l border-r border-neutral-300 text-neutral-500 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/ font-bold flex items-center justify-center gap-4 flex-col"
                    
-            ></div>
+            >
+                <img src="/Logo.svg" alt="logo" className="size-10"/>
+                <p>
+                    WikiFlow (ALPHA)
+                </p>
+                <p className="text-xs text-center font-light">
+                    Online platform dedicated to changing how we explore Wikipedia and conduct amateur research. If you're the kind of person who starts on one article about Ping-pong and, 20 tabs later, finds yourself in Algebraic topology, this tool is for you!
+                </p>
+
+            </div>
             <TitleNodeHandles hover={hover} onHover={onHover}/>
         </div>
     )
