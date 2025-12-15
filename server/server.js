@@ -11,6 +11,17 @@ app.use(cors())
 app.use(express.json())
 app.use('/helpers', express.static(path.join(__dirname, 'helpers')));
 
+app.get('/', (req, res) => {
+    res.json({ 
+        status: 'Wikipedia Proxy Server Running',
+        endpoints: {
+            mainpage: 'GET /mainpage',
+            title: 'GET /title?title=YOUR_TITLE',
+            example: 'http://localhost:3001/title?title=JavaScript'
+        }
+    });
+});
+
 app.get('/mainpage', async (req, res) => {
     try {
         const mainPageResponse = await fetch(

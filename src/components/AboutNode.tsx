@@ -14,7 +14,7 @@ export const AboutNode = () => {
             onMouseLeave={() => onHover(false) }
         >
             <CloseBar id='aboutNode'/>
-            <div className="relative w-70   h-100 bg-neutral-100  border-b border-l border-r border-neutral-300 text-neutral-500 rounded-b-xs p-2 inset-shadow-sm  inset-shadow-neutral-300/ font-bold flex items-center justify-center gap-4 flex-col"
+            <div className="relative w-70   h-100 bg-neutral-100/50 backdrop-blur-2xl  text-neutral-500 rounded-b-xs p-2  font-bold flex items-center justify-center gap-4 flex-col"
                    
             >
                 <img src="/Logo.svg" alt="logo" className="size-10"/>

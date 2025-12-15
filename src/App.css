@@ -9,6 +9,13 @@
     scrollbar-width: none;
   }
 }
+
+textarea {
+  resize: none;        /* no manual resize */
+  overflow: hidden;    /* hide scrollbars */
+  line-height: 1.3;
+}
+
 .react-flow__nodesselection-rect {
   display: none;
 }

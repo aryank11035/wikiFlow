@@ -18,7 +18,7 @@ export const TitlePageNode = ({id , data} : {id : string ,data : any}) => {
                  onMouseEnter={() => onHover(true) }
                  onMouseLeave={() => onHover(false) }>
                 <CloseBar id={id}/>
-                <div className="relative w-fit h-fit bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-4 inset-shadow-sm  inset-shadow-neutral-300/80 ">
+                <div className="relative w-fit h-fit bg-neutral-100/30 backdrop-blur-2xl  border-b border-l border-r border-neutral-300 rounded-b-xs p-4 inset-shadow-sm  inset-shadow-neutral-300/80 ">
                 
                     <IFrameNode linkpage={`title?title=${encodeURIComponent(title)}`} nodeId={id} mainpage={false} title={title}/>
                 </div>

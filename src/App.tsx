@@ -1,8 +1,8 @@
 import './App.css'
+import '@xyflow/react/dist/style.css';  
 
 import { ReactFlow, Background,addEdge, useNodesState, useEdgesState ,Panel     } from '@xyflow/react';
 import type { Connection, Edge, Node } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';  
 import { useCallback, useEffect } from 'react';
 import {  InfoNode, MainPageNode } from './components/MainPageNode';
 import { TitlePageNode } from './components/TitlePageNode';
@@ -12,6 +12,7 @@ import { MenuPanel, SearchPanel } from './components/panels/panels';
 import { useNodeAction } from './helpers/create-node';
 import CustomClickableEdge from './components/CustomEdge';
 import { useDeleteActions } from './helpers/delete-node';
+import { StickyNode } from './components/StickyNode';
 
 
 const nodeTypes = {
@@ -20,6 +21,7 @@ const nodeTypes = {
   titlePageNode : TitlePageNode,
   imagePageNode : ImagePageNode ,
   aboutNode : AboutNode ,
+  stickyNode : StickyNode ,
 }
 const edgeTypes = {
   'customEdge' : CustomClickableEdge
@@ -38,6 +40,16 @@ const initialNodes = [
     data: { label: 'aboutNode' },
     type: 'aboutNode',
   },
+  {
+    id: 'stickyNode',
+    position: { x: 1000 , y: 500 },
+    style: { 
+      width: 250, 
+      height: 150 
+    },
+    data: { label: 'stickyNode' , text : 'Drag the canvas to move, Scroll + Ctrl to zoom' },
+    type: 'stickyNode',
+  },
   
 ];
 
@@ -54,7 +66,7 @@ const initialEdges = [
 
 export default function App() {
  
-  const [nodes ,onNodesChange] = useNodesState<any>(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState<any>(initialNodes);
   const [edges, setEdges , onEdgesChange] = useEdgesState<any>(initialEdges);
 
   const { createNewNode } = useNodeAction()
@@ -239,6 +251,8 @@ export default function App() {
         onEdgeClick={onEdgeClick}
         onSelectionChange={handleSelectionChange}
         style={{ backgroundColor: "#ffffff" }}
+        zoomOnScroll={false}
+        panOnScroll={true}
         fitView
       >
         <Panel position='top-center'>

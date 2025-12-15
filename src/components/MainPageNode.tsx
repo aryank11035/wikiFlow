@@ -33,7 +33,7 @@ export const MainPageNode = ({id} : {id : string}) => {
 
                 <CloseBar id={id}/>
                 
-                <div className="relative w-250 h-170 bg-neutral-100  border-b border-l border-r border-neutral-300 rounded-b-xs p-4 inset-shadow-sm  inset-shadow-neutral-300/80 "
+                <div className="relative w-250 h-170 bg-neutral-100/30 backdrop-blur-2xl  border-b border-l border-r border-neutral-300 rounded-b-xs p-4 inset-shadow-sm  inset-shadow-neutral-300/80 "
                    
                 >
                     <IFrameNode linkpage='mainpage' nodeId={id} mainpage={true}/>
