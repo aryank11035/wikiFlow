@@ -4,6 +4,13 @@ import { FaWikipediaW } from "react-icons/fa";
 import { useNodeAction } from "../../helpers/create-node";
 
 export const MenuPanel = ({handleMainPage} : {handleMainPage : () => void}) => {
+
+    const { createNewNode } = useNodeAction()
+
+    const createNoteNode = () => {
+        createNewNode(`stickNode-${Date.now()}` , {x : 600 , y :100} , 'stickyNode' , 'stickyNode' , 'stickyNode' , {width : 240 , height : 150})
+        console.log('clicked')
+    }
     return (
         <>
             <div className="w-fit h-fit flex gap-2">
@@ -16,6 +23,10 @@ export const MenuPanel = ({handleMainPage} : {handleMainPage : () => void}) => {
                 <div className="h-full flex items-center jusifty-center text-neutral-600 hover:text-black duration-200 cursor-pointer " onClick={handleMainPage}>
                     <FaWikipediaW className="size-10  "/>
                 </div>
+                <div className="h-full flex items-center jusifty-center text-neutral-600 hover:text-black duration-400 cursor-pointer " onClick={createNoteNode}>
+                    <img src="/sticky-note.png" alt="logo" className="size-10"/>
+                </div>
+   
                 {/* <div>
                     <Search className="size-10 text-neutral-600" strokeWidth={1.1}/>
                 </div> */}

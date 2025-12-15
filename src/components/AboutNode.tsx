@@ -14,13 +14,18 @@ export const AboutNode = () => {
             onMouseLeave={() => onHover(false) }
         >
             <CloseBar id='aboutNode'/>
-            <div className="relative w-70   h-100 bg-neutral-100/50 backdrop-blur-2xl  text-neutral-500 rounded-b-xs p-2  font-bold flex items-center justify-center gap-4 flex-col"
+            <div className="relative w-70   h-80 bg-neutral-100/50 backdrop-blur-2xl  text-neutral-500 rounded-b-xs p-2  font-bold flex items-center justify-center gap-4 flex-col"
                    
             >
                 <img src="/Logo.svg" alt="logo" className="size-10"/>
                 <p>
                     WikiFlow (ALPHA)
                 </p>
+                <div className="flex flex-wrap items-center font-light gap-2">
+                    <a className="hover:text-black cursor-pointer underline duration-300" target="_blank" href="https://github.com/aryank11035">Github</a>
+                    <a className="hover:text-black cursor-pointer underline  duration-300" target="_blank" href="https://portfolio-aryan-kate.vercel.app/">Portfolio</a>
+                    <a className="hover:text-black cursor-pointer underline  duration-300" target="_blank" href="https://www.linkedin.com/in/aryan-kate-7900b4251   /">LinkedIn</a>
+                </div>
                 <p className="text-xs text-center font-light">
                     Online platform dedicated to changing how we explore Wikipedia and conduct amateur research. If you're the kind of person who starts on one article about Ping-pong and, 20 tabs later, finds yourself in Algebraic topology, this tool is for you!
                 </p>

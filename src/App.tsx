@@ -13,6 +13,7 @@ import { useNodeAction } from './helpers/create-node';
 import CustomClickableEdge from './components/CustomEdge';
 import { useDeleteActions } from './helpers/delete-node';
 import { StickyNode } from './components/StickyNode';
+import { OffsetConnectionLine } from './components/CustomConnectionLine';
 
 
 const nodeTypes = {
@@ -32,7 +33,8 @@ const initialNodes = [
     id: 'mainPageNode',
     position: { x: -200 , y: 0 },
     data: { label: 'mainPageNode' },
-    type: 'mainPageNode',
+    type: 'mainPageNode'
+
   },
   {
     id: 'aboutNode',
@@ -44,7 +46,7 @@ const initialNodes = [
     id: 'stickyNode',
     position: { x: 1000 , y: 500 },
     style: { 
-      width: 250, 
+      width: 240, 
       height: 150 
     },
     data: { label: 'stickyNode' , text : 'Drag the canvas to move, Scroll + Ctrl to zoom' },
@@ -156,7 +158,6 @@ export default function App() {
   };
 
   const onNodeDrag = (e : React.MouseEvent , node : Node) => {
-    console.log(e)
     handleEdgesChange(node)
   }
 
@@ -231,7 +232,6 @@ export default function App() {
   }
   
   const onEdgeClick = useCallback((event : any ,edge : Edge) => {
-    console.log(event)
     deleteEdge([edge.id])
   },[])
 
@@ -242,6 +242,7 @@ export default function App() {
         proOptions={{ hideAttribution: true }}  
         nodes={nodes} 
         edges={edges} 
+        connectionLineComponent={OffsetConnectionLine}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         onNodesChange={onNodesChange}
@@ -253,6 +254,8 @@ export default function App() {
         style={{ backgroundColor: "#ffffff" }}
         zoomOnScroll={false}
         panOnScroll={true}
+        minZoom={0.1}
+         maxZoom={4} 
         fitView
       >
         <Panel position='top-center'>

@@ -1,8 +1,12 @@
 import { Handle, NodeResizeControl, Position } from '@xyflow/react';
 import { useState, useRef, useEffect } from 'react';
 import { handleStyle } from './MainPageNode';
+import { X } from 'lucide-react';
+import { useDeleteNode } from '../helpers/delete-node';
 
-export const StickyNode = ({data} : {data : {text : string}}) => {
+export const StickyNode = ({data , id} : {data : {text : string} , id : string}) => {
+
+     const deleteNode = useDeleteNode()
 
     const [hover , onHover] = useState<boolean>(false)
     const [stickyInput,setStickyInput] = useState<string>(data?.text)
@@ -110,7 +114,7 @@ export const StickyNode = ({data} : {data : {text : string}}) => {
         <NodeResizeControl 
             style={{background : 'transparent'}} 
             minWidth={150} 
-            minHeight={150} 
+            minHeight={100} 
             maxHeight={300} 
             maxWidth={280}
             onResize={handleResize}
@@ -121,19 +125,21 @@ export const StickyNode = ({data} : {data : {text : string}}) => {
         <TitleNodeHandles hover={hover} onHover={onHover}/>
             <div 
                 ref={containerRef}
-                className={` bg-yellow-300/40 backdrop-blur-xl w-full h-full  p-4 shadow-2xl shadow-yellow-300/${clicked ? '50' : '30'} text-neutral-600 font-semibold flex` }
+                className={` absolute inset-0 bg-yellow-300/40 backdrop-blur-xl w-full h-full  shadow-2xl shadow-yellow-300/${clicked ? '50' : '30'} text-neutral-600 font-semibold flex flex-col border border-yellow-500/50 rounded-xs` }
                 onMouseEnter={() => onHover(true)}
                 onMouseLeave={() => onHover(false)}
                 onClick={() => setClicked(true)}
                 onDoubleClick={handleDoubleClick}
             >
-
+                <button onClick={() => deleteNode(id)} className="text-yellow-500/50 p-1 text-center flex items-center justify-center hover:text-yellow-600 duration-300  cursor-pointer  w-fit self-end h-fit">
+                    <X size={15}/>
+                </button>
                 <textarea  
                     ref={textareaRef}
                     readOnly={!isEditing}
                     placeholder='write something..'
                     style={{ fontSize: `${fontSize}px`, lineHeight: '1.4' }}
-                    className={`grow outline-0 border-0 bg-transparent overflow-hidden resize-none w-full : placeholder:text-sm ${!isEditing ? 'pointer-events-none' : ''}`}
+                    className={`grow p-2 outline-0 border-0 bg-transparent overflow-hidden resize-none w-full : placeholder:text-sm ${!isEditing ? 'pointer-events-none' : ''}`}
                     onChange={(e) => setStickyInput(e.target.value)} 
                     value={stickyInput}
                     onBlur={handleBlur}
@@ -143,7 +149,7 @@ export const StickyNode = ({data} : {data : {text : string}}) => {
     )
 }
 
-const TitleNodeHandles = ({hover } : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
+const TitleNodeHandles = ({hover, onHover} : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
 
 
     return (
@@ -186,47 +192,50 @@ const TitleNodeHandles = ({hover } : {hover : boolean , onHover : React.Dispatch
             }}
         />
     
-        
-        <Handle
-            type="source"
-            position={Position.Top}
-            id="top-source"
-            style={{
+        <div className="absolute flex items-center justify-center  w-full h-full ">
+            <Handle
+                type="source"
+                position={Position.Top}
+                id="top-source"
+
+                style={{
+                    display : 'absolute',
+                    ...handleStyle,
+                    top : hover ? 0 : 5,
+                    opacity: hover ? 1 : 0,
+                }}
+            />
+            <Handle
+                type="source"
+                position={Position.Bottom}
+                id="bottom-source"
+                style={{
+                    ...handleStyle,
+                    bottom : hover ? 0 : 5 ,
+                    opacity: hover ? 1 : 0,
+                }}
+            />
+            <Handle
+                type="source"
+                position={Position.Left}
+                id="left-source"
+                style={{
                 ...handleStyle,
-                top : hover ? 0 : 5 ,
+                left : hover ? 0 : 5 ,
                 opacity: hover ? 1 : 0,
-            }}
-        />
-        <Handle
-            type="source"
-            position={Position.Bottom}
-            id="bottom-source"
-            style={{
+                }}
+            />
+            <Handle
+                type="source"
+                position={Position.Right}
+                id="right-source"
+                style={{
                 ...handleStyle,
-                bottom : hover ? 0 : 5 ,
-            opacity: hover ? 1 : 0,
-            }}
-        />
-        <Handle
-            type="source"
-            position={Position.Left}
-            id="left-source"
-            style={{
-            ...handleStyle,
-            left : hover ? 0 : 5 ,
-            opacity: hover ? 1 : 0,
-            }}
-        />
-        <Handle
-            type="source"
-            position={Position.Right}
-            id="right-source"
-            style={{
-            ...handleStyle,
-            right : hover ? 0 : 5 ,
-            opacity:   hover ? 1 : 0,
-            }}
-        />
+                right : hover ? 0 : 5 ,
+                opacity:   hover ? 1 : 0,
+                }}
+            />
+        </div>
             
         </>
     )

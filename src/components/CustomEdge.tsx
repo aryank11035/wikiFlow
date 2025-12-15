@@ -37,12 +37,15 @@ function CustomClickableEdge({
 
   return (
     <>
-      <BaseEdge path={edgePath} markerEnd={markerEnd} style={edgeStyle} />
+      <BaseEdge path={edgePath} markerEnd={markerEnd} style={edgeStyle} interactionWidth={30}
+/>
       {selected && (
         <BaseEdge 
+        interactionWidth={30}
+
           path={edgePath} 
           style={{
-            stroke: '#4299e1', // orange-200 with opacity
+            stroke: '#4299e1', 
             strokeWidth: 2,
             strokeOpacity: 0.5,
             strokeDasharray: '5, 5',
