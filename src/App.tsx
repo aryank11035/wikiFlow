@@ -4,7 +4,7 @@ import '@xyflow/react/dist/style.css';
 import { ReactFlow, Background,addEdge, useNodesState, useEdgesState ,Panel     } from '@xyflow/react';
 import type { Connection, Edge, Node } from '@xyflow/react';
 import { useCallback, useEffect } from 'react';
-import {  InfoNode, MainPageNode } from './components/MainPageNode';
+import {  MainPageNode } from './components/MainPageNode';
 import { TitlePageNode } from './components/TitlePageNode';
 import { ImagePageNode } from './components/ImgPageNode';
 import { AboutNode } from './components/AboutNode';
@@ -18,7 +18,6 @@ import { OffsetConnectionLine } from './components/CustomConnectionLine';
 
 const nodeTypes = {
   mainPageNode : MainPageNode,
-  infoNode : InfoNode,
   titlePageNode : TitlePageNode,
   imagePageNode : ImagePageNode ,
   aboutNode : AboutNode ,
@@ -129,7 +128,7 @@ export default function App() {
     })
   }
 
-  const calculateBestHandles = (sourceNode: any, targetNode: any) => {
+  const calculateBestHandles = (sourceNode: Node, targetNode: Node) => {
 
     
     
@@ -155,7 +154,7 @@ export default function App() {
       }
     }
 
-  };
+  }
 
   const onNodeDrag = (e : React.MouseEvent , node : Node) => {
     handleEdgesChange(node)
@@ -227,13 +226,13 @@ export default function App() {
     };
   },[nodes])
   
-  const handleMainPage = () => {
+  const handleMainPage = useCallback(() => {
     createNewNode(`mainPageNode-${Date.now()}` , {x : 600 , y :100} , 'mainPageNode' , 'mainPageNode' , 'mainPageNode' )
-  }
+  },[createNewNode])
   
   const onEdgeClick = useCallback((event : any ,edge : Edge) => {
     deleteEdge([edge.id])
-  },[])
+  },[deleteEdge])
 
   return (
     <div style={{ height: '100vh', width: '100%'}}>

@@ -1,4 +1,5 @@
-import { useReactFlow } from "@xyflow/react";
+import { useReactFlow, type Edge } from "@xyflow/react";
+import { useCallback, useEffect, useRef } from "react";
 
 export function useDeleteNode () {
     const { setEdges , setNodes } = useReactFlow()
@@ -10,25 +11,45 @@ export function useDeleteNode () {
 }
 
 export const useDeleteActions = () => {
-    const { setEdges , setNodes } = useReactFlow()
+    const { setEdges, setNodes } = useReactFlow()
+    const selectedNodeIdsRef = useRef<string[]>([])
+    const selectedEdgeIdsRef = useRef<string[]>([])
 
-
-    const deleteEdge = ( id : string[]) => {
-        document.addEventListener('keydown' , (e : KeyboardEvent) => {
-            if(e.key === 'Delete') {
-                setEdges((edges => edges.filter(edg => !id.includes(edg.id) )))
+    // Single keydown listener for the entire component lifecycle
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Delete') {
+                const nodeIds = selectedNodeIdsRef.current
+                const edgeIds = selectedEdgeIdsRef.current
+                
+                if (edgeIds.length > 0) {
+                    setEdges((prevEdges) => 
+                        prevEdges.filter(edge => !edgeIds.includes(edge.id))
+                    )
+                    selectedEdgeIdsRef.current = []
+                }
+                
+                if (nodeIds.length > 0) {
+                    setNodes((prevNodes) => 
+                        prevNodes.filter(node => !nodeIds.includes(node.id))
+                    )
+                    selectedNodeIdsRef.current = []
+                }
             }
-        })
+        }
 
-    }  
-    const deleteNode = ( id : string[]) => {
-        document.addEventListener('keydown' , (e : KeyboardEvent) => {
-            if(e.key === 'Delete') {
-                setNodes((nodes => nodes.filter(nd => !id.includes(nd.id) )))
-            }
-        })
+        document.addEventListener('keydown', handleKeyDown)
+        return () => document.removeEventListener('keydown', handleKeyDown)
+    }, [setEdges, setNodes])
 
-    }  
+    const deleteEdge = useCallback((ids: string[]) => {
+        selectedEdgeIdsRef.current = ids
+    }, [])
 
-    return { deleteEdge , deleteNode }
+    const deleteNode = useCallback((ids: string[]) => {
+        selectedNodeIdsRef.current = ids
+    }, [])
+
+    return { deleteEdge, deleteNode }
 }
+

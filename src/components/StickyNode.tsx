@@ -1,10 +1,13 @@
 import { Handle, NodeResizeControl, Position } from '@xyflow/react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import { handleStyle } from './MainPageNode';
 import { X } from 'lucide-react';
 import { useDeleteNode } from '../helpers/delete-node';
 
-export const StickyNode = ({data , id} : {data : {text : string} , id : string}) => {
+
+
+
+export const StickyNode = memo(({data , id} : {data : {text : string} , id : string}) => {
 
      const deleteNode = useDeleteNode()
 
@@ -125,7 +128,7 @@ export const StickyNode = ({data , id} : {data : {text : string} , id : string})
         <TitleNodeHandles hover={hover} onHover={onHover}/>
             <div 
                 ref={containerRef}
-                className={` absolute inset-0 bg-yellow-300/40 backdrop-blur-xl w-full h-full  shadow-2xl shadow-yellow-300/${clicked ? '50' : '30'} text-neutral-600 font-semibold flex flex-col border border-yellow-500/50 rounded-xs` }
+                className={` absolute inset-0 bg-yellow-300/40 backdrop-blur-xl w-full h-full  shadow-2xl ${clicked ? 'shadow-yellow-300/50' : 'shadow-yellow-300/30'} text-neutral-600 font-semibold flex flex-col border border-yellow-500/50 rounded-xs` }
                 onMouseEnter={() => onHover(true)}
                 onMouseLeave={() => onHover(false)}
                 onClick={() => setClicked(true)}
@@ -147,7 +150,7 @@ export const StickyNode = ({data , id} : {data : {text : string} , id : string})
             </div>
         </>
     )
-}
+})
 
 const TitleNodeHandles = ({hover, onHover} : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>} )  => {
 

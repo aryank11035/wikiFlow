@@ -1,5 +1,5 @@
 import { Position, Handle } from '@xyflow/react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { IFrameNode } from './IFrameNode';
 import { CloseBar } from './Closebar';
 
@@ -18,7 +18,7 @@ export const handleStyle = {
 
 
 
-export const MainPageNode = ({id} : {id : string}) => {
+export const MainPageNode = memo(({id} : {id : string}) => {
 
 
     const [hover , onHover] = useState<boolean>(false) 
@@ -45,8 +45,8 @@ export const MainPageNode = ({id} : {id : string}) => {
     )
 
 
-}   
-const MainNodeHandles = ({hover } : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>}) => {
+} )  
+const MainNodeHandles = memo(({hover } : {hover : boolean , onHover : React.Dispatch<React.SetStateAction<boolean>>}) => {
 
     return (
         <>
@@ -125,16 +125,4 @@ const MainNodeHandles = ({hover } : {hover : boolean , onHover : React.Dispatch<
 
         </>
     )
-}
-export const InfoNode = () => {
-    return (
-        <div className="p-4 bg-white border-2 border-gray-400 rounded">
-            <p>Info Node</p>
-            <Handle type="target" position={Position.Top} id='a'/>
-            <Handle type="target" position={Position.Bottom} id='b'/>
-            <Handle type="target" position={Position.Left} id='c'/>
-            <Handle type="target" position={Position.Right} id='d'/>
-        </div>
-    )
-}
-
+})
