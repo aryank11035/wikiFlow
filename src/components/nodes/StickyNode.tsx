@@ -2,7 +2,7 @@ import { Handle, NodeResizeControl, Position } from '@xyflow/react';
 import { useState, useRef, useEffect, memo } from 'react';
 import { handleStyle } from './MainPageNode';
 import { X } from 'lucide-react';
-import { useDeleteNode } from '../helpers/delete-node';
+import { useDeleteNode } from '../../helpers/delete-node';
 
 
 

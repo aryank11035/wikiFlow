@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CloseBar } from "./Closebar"
+import { CloseBar } from "../Closebar"
 import { IFrameNode } from "./IFrameNode"
 import { Handle, Position } from "@xyflow/react";
 import { handleStyle } from "./MainPageNode";

@@ -1,7 +1,7 @@
 import { Position, Handle } from '@xyflow/react';
 import { memo, useState } from 'react';
 import { IFrameNode } from './IFrameNode';
-import { CloseBar } from './Closebar';
+import { CloseBar } from '../Closebar';
 
 export const handleStyle = {
 

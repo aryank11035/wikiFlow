@@ -20,6 +20,11 @@ export const MenuPanel = ({handleMainPage , enableShift} : {handleMainPage : () 
         createNewNode(`stickNode-${Date.now()}` , {x : 600 , y :100} , 'stickyNode' , 'stickyNode' , 'stickyNode' , {width : 240 , height : 150})
         console.log('clicked')
     }
+
+    const loadFile  = (e : any ) => {
+        createNewNode(`e.target.files[0]-${Date.now()}` ,  {x : 1000 , y :100} , 'uploadNode' ,'uploadNode', undefined, undefined , e.target.files[0])
+    }
+
     return (
         <>
             <div className="w-fit h-fit flex gap-2">
@@ -50,7 +55,7 @@ export const MenuPanel = ({handleMainPage , enableShift} : {handleMainPage : () 
                 <div className="relative size-10 cursor-pointer group duration-200" onClick={openFileInput}>
                    <img src="/sticky-note2.png" alt="logo" className="size-10"/>
                 </div>
-                <input type="file" id="fileInput" style={{display : 'none'}} ref={fileInputRef}/>
+                <input type="file" id="fileInput" style={{display : 'none'}} ref={fileInputRef} onChange={(e) => loadFile(e)}/>
             </div>
 {/*         
                     <div className='h-15 w-50  border border-neutral-300 rounded-sm inset-shadow-sm  inset-shadow-neutral-300/80 backdrop-blur-2xl'>

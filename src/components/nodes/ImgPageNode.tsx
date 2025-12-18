@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { TitleNodeHandles } from "./TitlePageNode"
 import { X } from "lucide-react"
-import { useDeleteNode } from "../helpers/delete-node"
+import { useDeleteNode } from "../../helpers/delete-node"
 
 export const ImagePageNode = ({id , data } : {id : string , data :any}) => {
 

@@ -5,16 +5,17 @@ import { pdfjs } from 'react-pdf';
 import { ReactFlow, Background,addEdge, useNodesState, useEdgesState ,Panel, SelectionMode     } from '@xyflow/react';
 import type { Connection, Edge, Node } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
-import {  MainPageNode } from './components/MainPageNode';
-import { TitlePageNode } from './components/TitlePageNode';
-import { ImagePageNode } from './components/ImgPageNode';
-import { AboutNode } from './components/AboutNode';
+import {  MainPageNode } from './components/nodes/MainPageNode';
+import { TitlePageNode } from './components/nodes/TitlePageNode';
+import { ImagePageNode } from './components/nodes/ImgPageNode';
+import { AboutNode } from './components/nodes/AboutNode';
 import { MenuPanel, SearchPanel } from './components/panels/panels';
 import { useNodeAction } from './helpers/create-node';
 import CustomClickableEdge from './components/CustomEdge';
 import { useDeleteActions } from './helpers/delete-node';
-import { StickyNode } from './components/StickyNode';
+import { StickyNode } from './components/nodes/StickyNode';
 import { OffsetConnectionLine } from './components/CustomConnectionLine';
+import { UploadNode } from './components/nodes/UploadNode';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -28,6 +29,7 @@ const nodeTypes = {
   imagePageNode : ImagePageNode ,
   aboutNode : AboutNode ,
   stickyNode : StickyNode ,
+  uploadNode : UploadNode
 }
 const edgeTypes = {
   'customEdge' : CustomClickableEdge
