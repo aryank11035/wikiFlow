@@ -1,9 +1,10 @@
 import './App.css'
 import '@xyflow/react/dist/style.css';  
+import { pdfjs } from 'react-pdf';
 
-import { ReactFlow, Background,addEdge, useNodesState, useEdgesState ,Panel     } from '@xyflow/react';
+import { ReactFlow, Background,addEdge, useNodesState, useEdgesState ,Panel, SelectionMode     } from '@xyflow/react';
 import type { Connection, Edge, Node } from '@xyflow/react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {  MainPageNode } from './components/MainPageNode';
 import { TitlePageNode } from './components/TitlePageNode';
 import { ImagePageNode } from './components/ImgPageNode';
@@ -14,6 +15,11 @@ import CustomClickableEdge from './components/CustomEdge';
 import { useDeleteActions } from './helpers/delete-node';
 import { StickyNode } from './components/StickyNode';
 import { OffsetConnectionLine } from './components/CustomConnectionLine';
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 
 const nodeTypes = {
@@ -69,24 +75,20 @@ export default function App() {
  
   const [nodes, setNodes, onNodesChange] = useNodesState<any>(initialNodes);
   const [edges, setEdges , onEdgesChange] = useEdgesState<any>(initialEdges);
+  const [selectionBoxEnabled, setSelectionBoxEnabled] = useState(false);
 
   const { createNewNode } = useNodeAction()
   const { deleteEdge  , deleteNode } = useDeleteActions()
 
   const onConnect = useCallback(
   (connection: Connection) => {
-    setEdges((eds) => {
-      const filtered = eds.filter(
-        (e) => e.target !== connection.target
-      );
-      return addEdge(
-        {
-          ...connection,
-          type: "customEdge",
-        },
-        filtered
-      );
-    });
+
+    const newEdge = {
+      ...connection , 
+      type : 'customEdge'
+    }
+
+    setEdges((eds : Edge[]) => addEdge(newEdge , eds))
   },
   []
   );
@@ -234,6 +236,11 @@ export default function App() {
     deleteEdge([edge.id])
   },[deleteEdge])
 
+
+  const enableShift = useCallback(() => {
+    setSelectionBoxEnabled(true)
+  },[])
+
   return (
     <div style={{ height: '100vh', width: '100%'}}>
      
@@ -250,18 +257,22 @@ export default function App() {
         onNodeDrag={onNodeDrag}
         onEdgeClick={onEdgeClick}
         onSelectionChange={handleSelectionChange}
+        onSelectionDrag={enableShift}
+        selectionOnDrag={selectionBoxEnabled}
+        panOnDrag={!selectionBoxEnabled}
+        selectionMode={SelectionMode.Partial}
         style={{ backgroundColor: "#ffffff" }}
         zoomOnScroll={false}
         panOnScroll={true}
         minZoom={0.1}
-         maxZoom={4} 
+        maxZoom={4} 
         fitView
       >
         <Panel position='top-center'>
           <SearchPanel/>
         </Panel>
         <Panel position="bottom-center">
-          <MenuPanel handleMainPage={handleMainPage}/>
+          <MenuPanel handleMainPage={handleMainPage} enableShift={enableShift}/>
         </Panel>
         
         <Background 

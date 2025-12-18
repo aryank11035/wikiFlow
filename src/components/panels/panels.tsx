@@ -1,11 +1,20 @@
-import { Search, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Search, X , Plus } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { FaWikipediaW } from "react-icons/fa";
 import { useNodeAction } from "../../helpers/create-node";
+import { StickyNote } from 'lucide-react';
 
-export const MenuPanel = ({handleMainPage} : {handleMainPage : () => void}) => {
+export const MenuPanel = ({handleMainPage , enableShift} : {handleMainPage : () => void , enableShift : () => void}) => {
 
     const { createNewNode } = useNodeAction()
+
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
+    const openFileInput = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    }
 
     const createNoteNode = () => {
         createNewNode(`stickNode-${Date.now()}` , {x : 600 , y :100} , 'stickyNode' , 'stickyNode' , 'stickyNode' , {width : 240 , height : 150})
@@ -20,16 +29,28 @@ export const MenuPanel = ({handleMainPage} : {handleMainPage : () => void}) => {
                 <div className="h-full  flex items-center justify-center">
                     <img src="/Logo.svg" alt="logo" className="size-10"/>
                 </div>
-                <div className="h-full flex items-center jusifty-center text-neutral-600 hover:text-black duration-200 cursor-pointer " onClick={handleMainPage}>
+                <div className="h-full flex items-center jusifty-center text-neutral-700 hover:text-black duration-200 cursor-pointer " onClick={handleMainPage}>
                     <FaWikipediaW className="size-10  "/>
                 </div>
-                <div className="h-full flex items-center jusifty-center text-neutral-600 hover:text-black duration-400 cursor-pointer " onClick={createNoteNode}>
+                <div className="  border-l border-l-neutral-300 size-1 h-9"></div>
+                <div>
+                    <Search className="size-10 text-neutral-600 cursor-pointer" strokeWidth={1.5}/>
+                </div>
+                <div className="h-full flex items-center jusifty-center text-neutral-700 hover:text-black duration-400 cursor-pointer " onClick={createNoteNode}>
                     <img src="/sticky-note.png" alt="logo" className="size-10"/>
                 </div>
-   
-                {/* <div>
-                    <Search className="size-10 text-neutral-600" strokeWidth={1.1}/>
-                </div> */}
+                <div className="h-full flex items-center jusifty-center text-neutral-700 hover:text-black duration-400 cursor-pointer " id='enable-shift' onClick={enableShift}>
+                    <div className="size-10 relative ">
+                        <div className=" absolute top-1 left-1 size-7 bg-[#4299e1]/30 border-dashed border-[#4299e1] border-2 rounded-sm ">
+
+                        </div>
+                        <Plus className="size-5 absolute -bottom-1 -right-1" strokeWidth={2}/>
+                    </div>
+                </div>
+                <div className="relative size-10 cursor-pointer group duration-200" onClick={openFileInput}>
+                   <img src="/sticky-note2.png" alt="logo" className="size-10"/>
+                </div>
+                <input type="file" id="fileInput" style={{display : 'none'}} ref={fileInputRef}/>
             </div>
 {/*         
                     <div className='h-15 w-50  border border-neutral-300 rounded-sm inset-shadow-sm  inset-shadow-neutral-300/80 backdrop-blur-2xl'>
