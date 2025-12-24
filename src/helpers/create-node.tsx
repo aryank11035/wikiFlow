@@ -6,7 +6,6 @@ export const useNodeAction =  () => {
 
     const createNewNode = (newNodeId : string , newPosition : { x : number , y : number } , label : string , nodeType : string , title ?: string , style ?: {width : number , height : number} ,  pdf ?: any ) => {
        
-        console.log(pdf)
         const newNode = {
             id: newNodeId,
             position: {

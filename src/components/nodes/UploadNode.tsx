@@ -1,4 +1,3 @@
-import { useState } from "react"
 import PdfComp from "../PdfComp"
 
 export const UploadNode = ({data} : {data : any}) => {
@@ -7,10 +6,13 @@ export const UploadNode = ({data} : {data : any}) => {
 
     if(!pdf) return 
 
+    const url = URL.createObjectURL(pdf)
 
     return(
-        <div className='relative bg-neutral-100  border border-neutral-300 rounded-b-xs  shadow-2xl '>
-            <PdfComp pdf={pdf}/>
-        </div>
+      <>
+      
+      <PdfComp pdf={url}/>
+      </>
+        
     )
 }

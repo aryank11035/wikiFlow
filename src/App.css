@@ -47,3 +47,43 @@ html, body, #root {
 #the-iframe::-webkit-scrollbar {
     display: none;
 }
+
+
+.pdf_layers {
+  position: relative;
+  pointer-events: none;
+}
+
+.pdf_layers canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pdf_layers_text {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  line-height: 1;
+  z-index: 5;
+  pointer-events: auto;
+  user-select: text;
+}
+
+.pdf_layers_text br::selection{
+  color : transparent
+}
+
+.pdf_layers_text span {
+  position: absolute;
+  cursor: text;
+  white-space: pre;
+  transform-origin: 0% 0%;
+  color: transparent;
+}
+
+.pdf_layers_text span::selection {
+  background-color: rgba(254, 208, 55, 0.6);
+
+}

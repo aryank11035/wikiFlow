@@ -1,6 +1,5 @@
 import './App.css'
 import '@xyflow/react/dist/style.css';  
-import { pdfjs } from 'react-pdf';
 
 import { ReactFlow, Background,addEdge, useNodesState, useEdgesState ,Panel, SelectionMode     } from '@xyflow/react';
 import type { Connection, Edge, Node } from '@xyflow/react';
@@ -16,11 +15,6 @@ import { useDeleteActions } from './helpers/delete-node';
 import { StickyNode } from './components/nodes/StickyNode';
 import { OffsetConnectionLine } from './components/CustomConnectionLine';
 import { UploadNode } from './components/nodes/UploadNode';
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
 
 
 const nodeTypes = {
