@@ -7,8 +7,6 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 
-
-
 export default function PdfComp({pdf} : {pdf : any}) {
  
   const [totalPages , setTotalPages] = useState(0)
